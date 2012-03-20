@@ -22,7 +22,7 @@ namespace Irrefutable.FinSharp.DateCalculations.Tests
         {
             IList<DateTime> retVal = _factory.CreateDateSequence(
                 new DateSpan(new DateTime(1999, 10, 15), new DateTime(2000, 10, 15)),
-                new WeekDayCalendar(), DateSequenceFrequency.SEMIANNUAL).ToList();
+                DateSequenceFrequency.SEMIANNUAL).ToList();
 
             retVal.Count().Should().Be(1);
             retVal[0].Should().Be(new DateTime(2000, 04, 15));
@@ -36,7 +36,7 @@ namespace Irrefutable.FinSharp.DateCalculations.Tests
         {
             IList<DateTime> retVal = _factory.CreateDateSequence(
                 new DateSpan(new DateTime(y1, m1, d1), new DateTime(y2, m2, d2)),
-                new WeekDayCalendar(), frequency).ToList();
+                frequency).ToList();
 
             return retVal.Count();
         }

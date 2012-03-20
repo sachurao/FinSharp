@@ -45,9 +45,21 @@
     <Compile Include="DateCalculations\IDayCounterFactory.cs" />
     <Compile Include="DateCalculations\IDateSequenceFactory.cs" />
     <Compile Include="DateCalculations\IHolidayCalendar.cs" />
+    <Compile Include="DefaultConstants.cs" />
+    <Compile Include="Instruments\AbstractDateSchedule.cs" />
+    <Compile Include="Instruments\BondSpecification.cs" />
+    <Compile Include="Instruments\AbstractDateDecimalSchedule.cs" />
+    <Compile Include="Instruments\CouponPayment.cs" />
+    <Compile Include="Instruments\CouponPaymentSchedule.cs" />
+    <Compile Include="Instruments\InterestRateSchedule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServiceProxies\IHolidayCalendarSvc.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy $(TargetDir)$(TargetName).* $(ProjectDir)..\..\..\..\..\Output /y</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

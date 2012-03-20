@@ -7,6 +7,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Irrefutable.FinSharp.DateCa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Irrefutable.FinSharp.DateCalculations.Tests", "Irrefutable.FinSharp.DateCalculations.Tests\Irrefutable.FinSharp.DateCalculations.Tests.csproj", "{3B46C333-4F04-4C00-B00C-2A9BDBAB0AE1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Irrefutable.FinSharp.InstrumentValuation", "Irrefutable.FinSharp.InstrumentValuation\Irrefutable.FinSharp.InstrumentValuation.csproj", "{677F4748-D926-4D0F-A362-65DB4304A79D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Irrefutable.FinSharp.InstrumentValuation.Tests", "Irrefutable.FinSharp.InstrumentValuation.Tests\Irrefutable.FinSharp.InstrumentValuation.Tests.csproj", "{39FB8F36-C061-4489-9EAD-818D60F9514D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Irrefutable.FinSharp.Instruments", "Irrefutable.FinSharp.Instruments\Irrefutable.FinSharp.Instruments.csproj", "{02A59506-5A21-4F94-B568-9F095C99B8A4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +31,18 @@ Global
 		{3B46C333-4F04-4C00-B00C-2A9BDBAB0AE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3B46C333-4F04-4C00-B00C-2A9BDBAB0AE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3B46C333-4F04-4C00-B00C-2A9BDBAB0AE1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{677F4748-D926-4D0F-A362-65DB4304A79D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{677F4748-D926-4D0F-A362-65DB4304A79D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{677F4748-D926-4D0F-A362-65DB4304A79D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{677F4748-D926-4D0F-A362-65DB4304A79D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39FB8F36-C061-4489-9EAD-818D60F9514D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39FB8F36-C061-4489-9EAD-818D60F9514D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39FB8F36-C061-4489-9EAD-818D60F9514D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39FB8F36-C061-4489-9EAD-818D60F9514D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02A59506-5A21-4F94-B568-9F095C99B8A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02A59506-5A21-4F94-B568-9F095C99B8A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02A59506-5A21-4F94-B568-9F095C99B8A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02A59506-5A21-4F94-B568-9F095C99B8A4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
