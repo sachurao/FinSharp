@@ -6,10 +6,12 @@ namespace Irrefutable.FinSharp.DateCalculations
     public interface IDateSequenceFactory
     {
         IEnumerable<DateTime> CreateDateSequence(DateSpan sequenceRange,
-            IHolidayCalendar holidayCalendar,
-            DateSequenceFrequency frequency = DateSequenceFrequency.ANNUAL,
-            DateSequenceGenerationRule sequenceGenerationRule = DateSequenceGenerationRule.FORWARD,
-            BusinessDayConvention businessDayConvention = BusinessDayConvention.FOLLOWING); 
+            DateSequenceFrequency frequency = DateSequenceFrequency.ANNUAL);
+
+        IEnumerable<DateTime> CreateBusinessDateSequence(IEnumerable<DateTime> notionalDates,
+                                                 String holidayCalendarRef,
+                                                 BusinessDayConvention businessDayConvention =
+                                                     BusinessDayConvention.NO_ADJUSTMENT);
     }
 
     public enum BusinessDayConvention

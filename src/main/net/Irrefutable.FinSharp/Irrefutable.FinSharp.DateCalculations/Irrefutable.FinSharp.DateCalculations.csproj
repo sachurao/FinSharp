@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Irrefutable.Shared.Ioc">
+      <HintPath>..\..\..\..\..\Output\Irrefutable.Shared.Ioc.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -41,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DateSequenceFactory.cs" />
+    <Compile Include="DayCounters\DayCounterFactory.cs" />
     <Compile Include="DayCounters\DayCounter_30E_360.cs" />
     <Compile Include="DayCounters\DayCounter_30_360.cs" />
     <Compile Include="DayCounters\DayCounter_30_360_Base.cs" />
@@ -60,6 +64,9 @@
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy $(TargetDir)$(TargetName).* $(ProjectDir)..\..\..\..\..\Output /y</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

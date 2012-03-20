@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{4B616EB0-BDB5-4C49-B180-9FAF1E8C677F}</ProjectGuid>
+    <ProjectGuid>{02A59506-5A21-4F94-B568-9F095C99B8A4}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Irrefutable.Shared.Interfaces</RootNamespace>
-    <AssemblyName>Irrefutable.Shared.Interfaces</AssemblyName>
+    <RootNamespace>Irrefutable.FinSharp.Instruments</RootNamespace>
+    <AssemblyName>Irrefutable.FinSharp.Instruments</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -31,6 +31,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Irrefutable.Shared.Interfaces">
+      <HintPath>..\..\..\..\..\Output\Irrefutable.Shared.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="Irrefutable.Shared.Ioc">
+      <HintPath>..\..\..\..\..\Output\Irrefutable.Shared.Ioc.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -40,33 +46,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Command\ICommand.cs" />
-    <Compile Include="Communication\CommunicationMode.cs" />
-    <Compile Include="Communication\ConstantsEnums.cs" />
-    <Compile Include="Communication\ICommunicationChannel.cs" />
-    <Compile Include="Communication\ICommunicationChannelPool.cs" />
-    <Compile Include="Communication\ICommunicationService.cs" />
-    <Compile Include="ActivityControl\ICanStart.cs" />
-    <Compile Include="ActivityControl\ICanShutdown.cs" />
-    <Compile Include="ActivityControl\IControlledActivity.cs" />
-    <Compile Include="Communication\ICommunicationServiceConfig.cs" />
-    <Compile Include="Communication\ICommunicationServiceBuilder.cs" />
-    <Compile Include="Communication\IIncomingMessage.cs" />
-    <Compile Include="Communication\IMessageHandler.cs" />
-    <Compile Include="Communication\IMessageReceiverChannel.cs" />
-    <Compile Include="Communication\IMessageDestination.cs" />
-    <Compile Include="Communication\IMessageSenderChannel.cs" />
-    <Compile Include="Communication\IMessageWrapper.cs" />
-    <Compile Include="DataInterchange\IDataStructureFormatter.cs" />
-    <Compile Include="DependencyResolution\IDependencyManager.cs" />
-    <Compile Include="Interception\IConfigureInterception.cs" />
-    <Compile Include="Logging\ILoggingService.cs" />
+    <Compile Include="Bond\BondInstrument.cs" />
+    <Compile Include="InstrumentFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RemoteConnection\ICanConnect.cs" />
-    <Compile Include="RemoteConnection\ICanDisconnect.cs" />
-    <Compile Include="RemoteConnection\IRemoteConnection.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Irrefutable.FinSharp\Irrefutable.FinSharp.csproj">
+      <Project>{51444AE3-E187-46C0-B044-905BCB150B88}</Project>
+      <Name>Irrefutable.FinSharp</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>xcopy $(TargetDir)$(TargetName).* $(ProjectDir)..\..\..\..\..\Output /y</PostBuildEvent>
