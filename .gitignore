@@ -5,6 +5,7 @@ Thumbs.db
 *.obj
 *.exe
 *.pdb
+*.dll
 *.user
 *.aps
 *.pch
@@ -26,4 +27,5 @@ Thumbs.db
 obj/
 [Rr]elease*/
 _ReSharper*/
+Output*/
 [Tt]est[Rr]esult*

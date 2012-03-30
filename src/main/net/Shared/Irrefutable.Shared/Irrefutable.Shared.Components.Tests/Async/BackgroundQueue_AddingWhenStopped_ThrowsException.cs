@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Irrefutable.Shared.Utilities.Async;
+using Irrefutable.Shared.Components.Async;
 using Irrefutable.Shared.Components.Logging;
 using Irrefutable.Shared.Interfaces.ActivityControl;
 using System.Threading;
