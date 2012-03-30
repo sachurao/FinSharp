@@ -1,0 +1,1 @@
+Output directory created that will contain compilation output from all solutions.
