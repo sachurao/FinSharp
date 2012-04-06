@@ -1,1 +1,1 @@
-A simple pricing and financial modeling library.
+A simple pricing and financial modeling library built using .NET 4.0.
