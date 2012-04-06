@@ -1,1 +1,1 @@
-FinSharp
+A simple pricing and financial modeling library.
