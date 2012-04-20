@@ -5,15 +5,13 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{6C7E2E42-AD9F-435C-831C-49CCEDCB06A8}</ProjectGuid>
+    <ProjectGuid>{BC5B490E-6E1E-4692-9B93-CC0967563508}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Irrefutable.Shared.Utilities.Tests</RootNamespace>
-    <AssemblyName>Irrefutable.Shared.Utilities.Tests</AssemblyName>
+    <RootNamespace>Irrefutable.FinSharp.Desktop.Common</RootNamespace>
+    <AssemblyName>Irrefutable.FinSharp.Desktop.Common</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
-    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -33,18 +31,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FluentAssertions">
-      <HintPath>..\packages\FluentAssertions.1.5.0.0\Lib\.NetFramework 4.0\FluentAssertions.dll</HintPath>
-    </Reference>
-    <Reference Include="nunit.framework, Version=2.5.10.11092, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
-      <HintPath>..\packages\NUnit.2.5.10.11092\lib\nunit.framework.dll</HintPath>
-    </Reference>
-    <Reference Include="nunit.mocks, Version=2.5.10.11092, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
-      <HintPath>..\packages\NUnit.2.5.10.11092\lib\nunit.mocks.dll</HintPath>
-    </Reference>
-    <Reference Include="pnunit.framework">
-      <HintPath>..\packages\NUnit.2.5.10.11092\lib\pnunit.framework.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -54,31 +40,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Concurrency\AtomicBooleanFixture.cs" />
+    <Compile Include="Binding\AbstractViewModel.cs" />
+    <Compile Include="DesktopDefaults.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Irrefutable.Shared.Interfaces\Irrefutable.Shared.Interfaces.csproj">
-      <Project>{4B616EB0-BDB5-4C49-B180-9FAF1E8C677F}</Project>
-      <Name>Irrefutable.Shared.Interfaces</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Irrefutable.Shared.Ioc\Irrefutable.Shared.Ioc.csproj">
-      <Project>{0FF6B7ED-BA7A-4699-8B53-583DB9D84E60}</Project>
-      <Name>Irrefutable.Shared.Ioc</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Irrefutable.Shared.Utilities\Irrefutable.Shared.Utilities.csproj">
-      <Project>{C55051E0-743E-4EAB-8278-604E583A5AE1}</Project>
-      <Name>Irrefutable.Shared.Utilities</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>xcopy $(TargetDir)$(TargetName).* $(ProjectDir)..\..\..\..\..\..\Output /y</PostBuildEvent>
   </PropertyGroup>
-  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
