@@ -27,5 +27,9 @@ Thumbs.db
 obj/
 [Rr]elease*/
 _ReSharper*/
-Output*/
+Output*
 [Tt]est[Rr]esult*
+
+#Nuget
+packages/
+*.dgml
