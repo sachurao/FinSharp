@@ -83,13 +83,12 @@
       <Name>Irrefutable.Shared.Utilities</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy $(TargetDir)$(TargetName).* $(ProjectDir)..\..\..\..\..\..\Output /y</PostBuildEvent>
+    <PostBuildEvent>xcopy $(TargetDir)$(TargetName).* $(ProjectDir)..\..\Output /y</PostBuildEvent>
   </PropertyGroup>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -31,11 +31,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Irrefutable.Shared.Interfaces">
-      <HintPath>..\..\..\..\..\Output\Irrefutable.Shared.Interfaces.dll</HintPath>
+    <Reference Include="Irrefutable.Shared.Interfaces, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Output\Irrefutable.Shared.Interfaces.dll</HintPath>
     </Reference>
-    <Reference Include="Irrefutable.Shared.Ioc">
-      <HintPath>..\..\..\..\..\Output\Irrefutable.Shared.Ioc.dll</HintPath>
+    <Reference Include="Irrefutable.Shared.Ioc, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Output\Irrefutable.Shared.Ioc.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -58,7 +60,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy $(TargetDir)$(TargetName).* $(ProjectDir)..\..\..\..\..\..\Output /y</PostBuildEvent>
+    <PostBuildEvent>xcopy $(TargetDir)$(TargetName).* $(ProjectDir)..\..\Output /y</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -38,6 +38,7 @@ namespace Irrefutable.FinSharp.Desktop
         protected override IModuleCatalog CreateModuleCatalog()
         {
             return new DirectoryModuleCatalog() {ModulePath = DesktopDefaults.RELATIVE_PATH_MODULES};
+            
         }
 
         
