@@ -23,11 +23,7 @@ namespace Irrefutable.Shared.Components.Tests.Async
                 totalProcessed++;
                 Logger.Info(this, "Take operation successful: " + i.ToString());
                 if (_backgroundQueue.Status != ActivationStatus.INACTIVE) Thread.Sleep(100);
-            }, new BackgroundQueueConfig()
-            {
-                ProcessAllItemsBeforeShutdown = true,
-                ProcessSynchronously = true
-            });
+            }, new BackgroundQueueConfig(true, true), new CancellationTokenSource());
 
             for (int i = 0; i < 10000; i++)
                 _backgroundQueue.Add(i);

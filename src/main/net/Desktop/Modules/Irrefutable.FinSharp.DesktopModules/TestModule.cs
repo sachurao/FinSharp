@@ -9,6 +9,7 @@ using Microsoft.Practices.Prism.Regions;
 
 namespace Irrefutable.FinSharp.DesktopModules
 {
+    [Module(ModuleName = "Test Module")]
     public class TestModule:IModule
     {
         private readonly IRegionManager _regionManager;

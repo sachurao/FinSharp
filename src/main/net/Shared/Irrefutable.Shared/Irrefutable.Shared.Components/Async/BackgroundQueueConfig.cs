@@ -6,18 +6,29 @@ using System.Threading;
 
 namespace Irrefutable.Shared.Components.Async
 {
+    /// <summary>
+    /// Immutable class that contains config for <see>
+    ///                                            <cref>BackgroundQueue</cref>
+    ///                                          </see>
+    /// </summary>
     public class BackgroundQueueConfig
     {
-        public BackgroundQueueConfig()
+        public BackgroundQueueConfig() : this(true, false)
         {
-            ProcessSynchronously = true;
-            ProcessAllItemsBeforeShutdown = false;
-            BoundedCapacity = Int32.MaxValue;
+            
+        }
+        
+
+        public BackgroundQueueConfig(bool processSynchronously, bool processAllBeforeShutdown, int boundedCapacity = Int32.MaxValue)
+        {
+            ProcessSynchronously = processSynchronously;
+            ProcessAllItemsBeforeShutdown = processAllBeforeShutdown;
+            BoundedCapacity = boundedCapacity;
         }
 
-        public bool ProcessSynchronously { get; set; }
-        public bool ProcessAllItemsBeforeShutdown { get; set; }
-        public Int32 BoundedCapacity { get; set; }
+        public bool ProcessSynchronously { get; private set; }
+        public bool ProcessAllItemsBeforeShutdown { get; private set; }
+        public Int32 BoundedCapacity { get; private set; }
     }
 
 

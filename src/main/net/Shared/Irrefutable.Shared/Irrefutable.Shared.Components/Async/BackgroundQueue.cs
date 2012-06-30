@@ -35,50 +35,57 @@ namespace Irrefutable.Shared.Components.Async
         #region Init
 
         public BackgroundQueue(Action<T> processItem)
-            : this(processItem, new BackgroundQueueConfig())
+            : this(processItem, new BackgroundQueueConfig(), new CancellationTokenSource())
         {
         }
 
-        public BackgroundQueue(Action<T> processItem, BackgroundQueueConfig config)
+        public BackgroundQueue(Action<T> processItem, 
+            BackgroundQueueConfig config,
+            CancellationTokenSource cancellationSource)
         {
             _config = config;
-            _cancellationSource = new CancellationTokenSource();
+            _cancellationSource = cancellationSource;
             
             //By default it uses a ConcurrentQueue as its underlying datastore.
             _blockingQueue = new BlockingCollection<T>(config.BoundedCapacity);
 
             //Creating a task that handles any new item added to the queue
             _processor = new Task(() =>
-            {
-                Func<bool> checkIfStoppedOrFinished = () => _config.ProcessAllItemsBeforeShutdown ? 
-                    _blockingQueue.IsCompleted : _blockingQueue.IsAddingCompleted;
+                                      {
+                                          Func<bool> checkIfStoppedOrFinished =
+                                              () => _config.ProcessAllItemsBeforeShutdown
+                                                        ? _blockingQueue.IsCompleted
+                                                        : _blockingQueue.IsAddingCompleted;
 
-                while (!checkIfStoppedOrFinished())
-                {
-                    //Has not been marked complete for adding and is not empty
-                    try
-                    {
-                        //Will wait indefinitely for the next item, unless cancelled
-                        T item = _blockingQueue.Take(_cancellationSource.Token);
+                                          while (!checkIfStoppedOrFinished())
+                                          {
+                                              //Has not been marked complete for adding and is not empty
+                                              try
+                                              {
+                                                  //Will wait indefinitely for the next item, unless cancelled
+                                                  T item = _blockingQueue.Take(_cancellationSource.Token);
 
-                        if (_config.ProcessSynchronously) processItem(item);
-                        else
-                        {
-                            //Pawning off the actual work to another task, so consumer can continue...
-                            Task.Factory.StartNew((i) => processItem(item), TaskCreationOptions.AttachedToParent);
-                        }
-                    }
-                    catch (OperationCanceledException)
-                    {
-                        Logger.Info(this, "Received an OperationCanceledException when trying to take next item from BlockingCollection.");
-                    }
-                    catch (InvalidOperationException)
-                    {
-                        Logger.Info(this, "Received an InvalidOperationException because the BlockingCollection has been marked as complete.");
-                    }
-                }
-                Logger.Info(this, "This BlockingCollection has been stopped.");
-            }, _cancellationSource.Token);
+                                                  if (_config.ProcessSynchronously) processItem(item);
+                                                  else
+                                                  {
+                                                      //Pawning off the actual work to another task, so consumer can continue...
+                                                      Task.Factory.StartNew((i) => processItem(item),
+                                                                            TaskCreationOptions.AttachedToParent);
+                                                  }
+                                              }
+                                              catch (OperationCanceledException)
+                                              {
+                                                  Logger.Info(this,
+                                                              "Received an OperationCanceledException when trying to take next item from BlockingCollection.");
+                                              }
+                                              catch (InvalidOperationException)
+                                              {
+                                                  Logger.Info(this,
+                                                              "Received an InvalidOperationException because the BlockingCollection has been marked as complete.");
+                                              }
+                                          }
+                                          Logger.Info(this, "This BlockingCollection has been stopped.");
+                                      }, _cancellationSource.Token);
         }
 
         #endregion
