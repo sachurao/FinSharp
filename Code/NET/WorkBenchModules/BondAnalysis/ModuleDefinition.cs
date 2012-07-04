@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Irrefutable.FinSharp.Desktop.Common;
+using StreamCipher.FinSharp.WorkBench.Common;
 using Microsoft.Practices.Prism.Modularity;
 using Microsoft.Practices.Prism.Regions;
 
