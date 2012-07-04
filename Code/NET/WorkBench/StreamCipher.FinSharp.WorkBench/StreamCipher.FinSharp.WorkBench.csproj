@@ -134,13 +134,9 @@
     <PostBuildEvent>xcopy $(TargetDir)$(TargetName).* $(ProjectDir)..\..\Output /y
 mkdir Modules</PostBuildEvent>
   </PropertyGroup>
-<<<<<<< HEAD:Code/NET/Desktop/Irrefutable.FinSharp.Desktop/Irrefutable.FinSharp.Desktop.csproj
-  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <PropertyGroup>
     <PreBuildEvent>rmdir Modules</PreBuildEvent>
   </PropertyGroup>
-=======
->>>>>>> S-01006:Code/NET/WorkBench/StreamCipher.FinSharp.WorkBench/StreamCipher.FinSharp.WorkBench.csproj
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
