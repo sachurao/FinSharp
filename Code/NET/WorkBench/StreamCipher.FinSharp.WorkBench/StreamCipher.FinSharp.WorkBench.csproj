@@ -125,7 +125,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\StreamCipher.FinSharp.WorkBench.Common\StreamCipher.FinSharp.WorkBench.Common.csproj">
-      <Project>{BC5B490E-6E1E-4692-9B93-CC0967563508}</Project>
+      <Project>{D495292E-FD23-4BCA-8604-CBB39C100E24}</Project>
       <Name>StreamCipher.FinSharp.WorkBench.Common</Name>
     </ProjectReference>
   </ItemGroup>

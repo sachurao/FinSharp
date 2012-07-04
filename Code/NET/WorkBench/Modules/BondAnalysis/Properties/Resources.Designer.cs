@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace StreamCipher.FinSharp.BondAnalysisModule.Properties {
+namespace StreamCipher.FinSharp.WorkBenchModules.BondAnalysis.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace StreamCipher.FinSharp.BondAnalysisModule.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("StreamCipher.FinSharp.BondAnalysisModule.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("StreamCipher.FinSharp.WorkBenchModules.BondAnalysis.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace StreamCipher.FinSharp.BondAnalysisModule.Properties {
+namespace StreamCipher.FinSharp.WorkBenchModules.BondAnalysis.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]

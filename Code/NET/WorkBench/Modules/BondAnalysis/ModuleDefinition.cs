@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using StreamCipher.FinSharp.WorkBench.Common;
+﻿using StreamCipher.FinSharp.WorkBench.Common;
 using Microsoft.Practices.Prism.Modularity;
 using Microsoft.Practices.Prism.Regions;
 
-namespace StreamCipher.FinSharp.BondAnalysisModule
+namespace StreamCipher.FinSharp.WorkBenchModules.BondAnalysis
 {
     [Module(ModuleName = "Bond Analysis Tools")]
     public class ModuleDefinition:IModule

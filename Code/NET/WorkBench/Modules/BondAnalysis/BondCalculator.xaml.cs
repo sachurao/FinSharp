@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace StreamCipher.FinSharp.BondAnalysisModule
+namespace StreamCipher.FinSharp.WorkBenchModules.BondAnalysis
 {
     /// <summary>
     /// Interaction logic for BondCalculator.xaml
