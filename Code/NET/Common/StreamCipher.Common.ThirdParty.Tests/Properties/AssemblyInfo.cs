@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Irrefutable.Shared.ThirdParty.Tests")]
+[assembly: AssemblyTitle("StreamCipher.Common.ThirdParty.Tests")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Irrefutable.Shared.ThirdParty.Tests")]
+[assembly: AssemblyProduct("StreamCipher.Common.ThirdParty.Tests")]
 [assembly: AssemblyCopyright("Copyright ©  2012")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

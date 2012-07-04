@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StreamCipher.FinSharp.WorkBench", "StreamCipher.FinSharp.WorkBench\StreamCipher.FinSharp.WorkBench.csproj", "{D759C487-7325-476D-B0A6-4301AD2B0B10}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StreamCipher.FinSharp.WorkBench", "WorkBench\StreamCipher.FinSharp.WorkBench\StreamCipher.FinSharp.WorkBench.csproj", "{D759C487-7325-476D-B0A6-4301AD2B0B10}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StreamCipher.FinSharp.WorkBench.Common", "StreamCipher.FinSharp.WorkBench.Common\StreamCipher.FinSharp.WorkBench.Common.csproj", "{BC5B490E-6E1E-4692-9B93-CC0967563508}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StreamCipher.FinSharp.WorkBench.Common", "WorkBench\StreamCipher.FinSharp.WorkBench.Common\StreamCipher.FinSharp.WorkBench.Common.csproj", "{BC5B490E-6E1E-4692-9B93-CC0967563508}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -38,8 +38,5 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.0\lib\NET35
 	EndGlobalSection
 EndGlobal

@@ -1,4 +1,4 @@
-﻿<Window x:Class="Irrefutable.FinSharp.Desktop.MainWindow"
+﻿<Window x:Class="StreamCipher.FinSharp.WorkBench.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:psm="http://www.codeplex.com/prism"

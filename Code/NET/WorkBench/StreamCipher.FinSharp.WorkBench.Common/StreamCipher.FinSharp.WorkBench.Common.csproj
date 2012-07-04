@@ -8,8 +8,8 @@
     <ProjectGuid>{BC5B490E-6E1E-4692-9B93-CC0967563508}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Irrefutable.FinSharp.Desktop.Common</RootNamespace>
-    <AssemblyName>Irrefutable.FinSharp.Desktop.Common</AssemblyName>
+    <RootNamespace>StreamCipher.FinSharp.WorkBench.Common</RootNamespace>
+    <AssemblyName>StreamCipher.FinSharp.WorkBench.Common</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
