@@ -108,14 +108,14 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\StreamCipher.FinSharp.WorkBench.Common\StreamCipher.FinSharp.WorkBench.Common.csproj">
+    <ProjectReference Include="..\..\StreamCipher.FinSharp.WorkBench\StreamCipher.FinSharp.WorkBench.Common\StreamCipher.FinSharp.WorkBench.Common.csproj">
       <Project>{D495292E-FD23-4BCA-8604-CBB39C100E24}</Project>
       <Name>StreamCipher.FinSharp.WorkBench.Common</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy /I $(TargetDir)*.* $(ProjectDir)..\..\..\Output\Modules /y</PostBuildEvent>
+    <PostBuildEvent>xcopy /I $(TargetDir)*.* $(ProjectDir)..\..\Output\Modules /y</PostBuildEvent>
   </PropertyGroup>
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
