@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StreamCipher.FinSharp.WorkBench", "WorkBench\StreamCipher.FinSharp.WorkBench\StreamCipher.FinSharp.WorkBench.csproj", "{D759C487-7325-476D-B0A6-4301AD2B0B10}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StreamCipher.FinSharp.WorkBench.Host", "StreamCipher.FinSharp.WorkBench\StreamCipher.FinSharp.WorkBench.Host\StreamCipher.FinSharp.WorkBench.Host.csproj", "{D759C487-7325-476D-B0A6-4301AD2B0B10}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StreamCipher.FinSharp.WorkBench.Common", "WorkBench\StreamCipher.FinSharp.WorkBench.Common\StreamCipher.FinSharp.WorkBench.Common.csproj", "{D495292E-FD23-4BCA-8604-CBB39C100E24}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StreamCipher.FinSharp.WorkBench.Common", "StreamCipher.FinSharp.WorkBench\StreamCipher.FinSharp.WorkBench.Common\StreamCipher.FinSharp.WorkBench.Common.csproj", "{D495292E-FD23-4BCA-8604-CBB39C100E24}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{654C9E76-BD35-4F1A-91F8-40267DB35094}"
 	ProjectSection(SolutionItems) = preProject
@@ -14,7 +14,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{654C9E
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{3BD87B2C-8EEE-41AA-9753-88FFC61221CB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StreamCipher.FinSharp.WorkBenchModules.BondAnalysis", "WorkBench\Modules\BondAnalysis\StreamCipher.FinSharp.WorkBenchModules.BondAnalysis.csproj", "{1B513ADB-AA38-4039-A926-36C1B595214C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StreamCipher.FinSharp.WorkBenchModules.BondAnalysis", "StreamCipher.FinSharp.WorkBenchModules\StreamCipher.FinSharp.WorkBenchModules.BondAnalysis\StreamCipher.FinSharp.WorkBenchModules.BondAnalysis.csproj", "{1B513ADB-AA38-4039-A926-36C1B595214C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
