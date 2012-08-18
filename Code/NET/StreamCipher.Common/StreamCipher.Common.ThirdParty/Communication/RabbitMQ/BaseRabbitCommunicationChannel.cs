@@ -13,7 +13,7 @@ namespace StreamCipher.Common.ThirdParty.Communication.RabbitMQ
     {
         #region Member Variables
         
-        protected const String EXCHANGE_NAME = "Irrefutable";
+        protected const String EXCHANGE_NAME = "StreamCipher";
         protected IConnection _connection;
         protected IModel _session;
 
@@ -21,10 +21,11 @@ namespace StreamCipher.Common.ThirdParty.Communication.RabbitMQ
         
         #region Init
 
-        protected BaseRabbitCommunicationChannel(DataInterchangeFormat format,
-            ICommunicationServiceConfig config, String connectionIdSuffix,
+        protected BaseRabbitCommunicationChannel(IDataInterchangeFormatter formatter,
+            ICommunicationServiceConfig config,
+            String connectionIdSuffix,
             Action<Exception> defaultExceptionHandler) :
-            base(ServiceBusType.RABBITMQ, format, config, connectionIdSuffix, defaultExceptionHandler)
+            base(ServiceBusType.RABBITMQ, formatter, config, connectionIdSuffix, defaultExceptionHandler)
         {
         }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using StreamCipher.Common.Interfaces.Communication;
@@ -14,8 +15,7 @@ namespace StreamCipher.Common.Components.Communication
         #region Member Variables
 
         private readonly ServiceBusType _messagingPlatform;
-        private readonly DataInterchangeFormat _format;
-        protected IDataStructureFormatter _formatter;
+        protected IDataInterchangeFormatter _formatter;
         protected ICommunicationServiceConfig _config;
         protected string _connectionId;
         protected Action<Exception> _defaultExceptionHandler;
@@ -26,20 +26,20 @@ namespace StreamCipher.Common.Components.Communication
         #region Init
         
         protected AbstractCommunicationChannel(ServiceBusType messagingPlatform,
-            DataInterchangeFormat format, 
+            IDataInterchangeFormatter formatter,
             ICommunicationServiceConfig config,
             String connectionIdSuffix,
             Action<Exception> defaultExceptionHandler)
         {
             _messagingPlatform = messagingPlatform;
-            _format = format;
+            _formatter = formatter;
             _config = config;
             _defaultExceptionHandler = defaultExceptionHandler;
             _connectionId = String.Format("{0}_{1}_{2}_{3}_{4}",
                 config.ConnectionIdPrefix,
                 System.Environment.UserName,
                 System.Environment.MachineName,
-                System.Diagnostics.Process.GetCurrentProcess().Id.ToString(),
+                System.Diagnostics.Process.GetCurrentProcess().Id.ToString(CultureInfo.InvariantCulture),
                 connectionIdSuffix);
         } 
 
@@ -47,14 +47,14 @@ namespace StreamCipher.Common.Components.Communication
         
         #region ICommunicationChannel
 
-        public DataInterchangeFormat Format 
-        { 
-            get { return _format; } 
-        }
-
         public ServiceBusType MessagingPlatform
         {
             get { return _messagingPlatform; }
+        }
+
+        public IDataInterchangeFormatter Formatter
+        {
+            get { return _formatter; }
         }
 
         #endregion

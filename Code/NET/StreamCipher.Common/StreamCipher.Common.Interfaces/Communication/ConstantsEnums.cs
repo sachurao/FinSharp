@@ -12,6 +12,7 @@ namespace StreamCipher.Common.Interfaces.Communication
 
     public enum ServiceBusType
     {
-        RABBITMQ = 0
+        RABBITMQ = 0,
+        CUSTOM = 1
     }
 }

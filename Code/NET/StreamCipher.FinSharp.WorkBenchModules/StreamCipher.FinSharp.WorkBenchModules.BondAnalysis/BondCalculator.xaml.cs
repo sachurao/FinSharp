@@ -11,5 +11,10 @@ namespace StreamCipher.FinSharp.WorkBenchModules.BondAnalysis
         {
             InitializeComponent();
         }
+
+        private void btnCalculate_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+
+        }
     }
 }

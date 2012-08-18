@@ -45,6 +45,7 @@
     <Compile Include="Communication\ConstantsEnums.cs" />
     <Compile Include="Communication\ICommunicationChannel.cs" />
     <Compile Include="Communication\ICommunicationChannelPool.cs" />
+    <Compile Include="Communication\ICommunicationChannelFactory.cs" />
     <Compile Include="Communication\ICommunicationService.cs" />
     <Compile Include="ActivityControl\ICanStart.cs" />
     <Compile Include="ActivityControl\ICanShutdown.cs" />
@@ -57,7 +58,7 @@
     <Compile Include="Communication\IMessageDestination.cs" />
     <Compile Include="Communication\IMessageSenderChannel.cs" />
     <Compile Include="Communication\IMessageWrapper.cs" />
-    <Compile Include="DataInterchange\IDataStructureFormatter.cs" />
+    <Compile Include="DataInterchange\IDataInterchangeFormatter.cs" />
     <Compile Include="DependencyResolution\IDependencyManager.cs" />
     <Compile Include="Interception\IConfigureInterception.cs" />
     <Compile Include="Logging\ILoggingService.cs" />

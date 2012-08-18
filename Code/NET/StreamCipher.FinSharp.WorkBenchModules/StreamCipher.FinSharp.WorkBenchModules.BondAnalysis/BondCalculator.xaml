@@ -74,8 +74,7 @@
                         Grid.Column="2"
                         Grid.ColumnSpan="1"
                         Grid.Row="1"
-                        Grid.RowSpan="1"
-                        >Calculate</Button>
+                        Grid.RowSpan="1">Calculate</Button>
                 <TextBlock Grid.Row="2"
                            Grid.RowSpan="1"
                            Grid.Column="0"

@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using StreamCipher.Common.Interfaces.Communication;
 using System.Collections.Concurrent;
-using StreamCipher.Common.Utilities.ObjectType;
 using System.Threading;
 using StreamCipher.Common.Utilities;
 

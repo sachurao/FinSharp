@@ -8,11 +8,10 @@ using StreamCipher.Common.Interfaces.RemoteConnection;
 
 namespace StreamCipher.Common.Interfaces.Communication
 {
-        public interface ICommunicationServiceBuilder
+    public interface ICommunicationServiceBuilder
     {
         ICommunicationServiceBuilder WithConfig(ICommunicationServiceConfig config);
         ICommunicationServiceBuilder WithDefaultExceptionHandler(Action<Exception> handleException);
-
-        void Build();
+        void Now();
     }
 }

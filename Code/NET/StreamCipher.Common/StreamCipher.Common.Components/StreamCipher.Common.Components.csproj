@@ -44,10 +44,10 @@
     <Compile Include="Async\BackgroundQueueConfig.cs" />
     <Compile Include="Communication\AbstractCommunicationChannel.cs" />
     <Compile Include="Communication\CommunicationChannelPool.cs" />
-    <Compile Include="Communication\Factory.cs" />
-    <Compile Include="Communication\CommunicationServiceBuilder.cs" />
     <Compile Include="Communication\DefaultCommunicationService.cs" />
     <Compile Include="Communication\DefaultCommunicationServiceConfig.cs" />
+    <Compile Include="Communication\MessageDestination.cs" />
+    <Compile Include="Communication\MessageWrapper.cs" />
     <Compile Include="Logging\Logger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

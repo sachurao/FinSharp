@@ -7,6 +7,7 @@ namespace StreamCipher.Common.Interfaces.Communication
 {
     public interface ICommunicationServiceConfig
     {
+        String ServiceBusAddress { get; }
         String ConnectionIdPrefix { get; }
         int TotalSenderChannels { get; }
         int TotalReceiverChannels { get; }

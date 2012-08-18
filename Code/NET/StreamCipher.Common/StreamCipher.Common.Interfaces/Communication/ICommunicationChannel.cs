@@ -10,6 +10,6 @@ namespace StreamCipher.Common.Interfaces.Communication
     public interface ICommunicationChannel:IRemoteConnection
     {
         ServiceBusType MessagingPlatform { get; }
-        DataInterchangeFormat Format { get; } 
+        IDataInterchangeFormatter Formatter { get; }
     }
 }

@@ -13,7 +13,7 @@ namespace StreamCipher.Common.Components.Logging
     public static class Logger
     {
         private static ILoggingService _loggingService = ServiceLocator.GetImplementationOf<ILoggingService>();
-
+        
         public static void Debug(Object caller, string debugMessage)
         {
             _loggingService.Debug(caller.GetType(), debugMessage);

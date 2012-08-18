@@ -7,11 +7,12 @@ using System.Diagnostics;
 
 namespace StreamCipher.Common.Components.Communication
 {
-    class DefaultCommunicationServiceConfig : ICommunicationServiceConfig
+    public class DefaultCommunicationServiceConfig : ICommunicationServiceConfig
     {
         #region Member Variables
 
         private String _connectionIdPrefix;
+        private String _serviceBusAddress;
         private int _totalSenderChannels;
         private int _totalReceiverChannels;
         private IDictionary<String, String> _customProps = new Dictionary<String, String>();
@@ -20,19 +21,27 @@ namespace StreamCipher.Common.Components.Communication
 
         #region Init
         
-        public DefaultCommunicationServiceConfig(int totalSenderChannels, int totalReceiverChannels, String connectionIdPrefix)
+        public DefaultCommunicationServiceConfig(String serviceBusAddress, 
+            int totalSenderChannels, int totalReceiverChannels, String connectionIdPrefix)
         {
+            _serviceBusAddress = serviceBusAddress;
             _totalSenderChannels = totalSenderChannels;
             _totalReceiverChannels = totalReceiverChannels;
             _connectionIdPrefix = connectionIdPrefix;
         }
 
-        public DefaultCommunicationServiceConfig(): this(3, 1, System.AppDomain.CurrentDomain.FriendlyName)
+        public DefaultCommunicationServiceConfig(String serviceBusAddress): this(serviceBusAddress, 
+            3, 1, System.AppDomain.CurrentDomain.FriendlyName)
         { 
         }
         #endregion
 
         #region ICommunicationServiceConfig
+
+        public string ServiceBusAddress
+        {
+            get { return _serviceBusAddress; }
+        }
 
         public string ConnectionIdPrefix
         {
