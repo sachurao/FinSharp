@@ -16,5 +16,11 @@ namespace StreamCipher.Common.Utilities.ObjectType
         {
             return expectedBaseType.IsAssignableFrom(derivedType);
         }
+
+        public static object GetDefault(Type t)
+        {
+            if (t.IsValueType) return Activator.CreateInstance(t);
+            else return null;
+        }
     }
 }

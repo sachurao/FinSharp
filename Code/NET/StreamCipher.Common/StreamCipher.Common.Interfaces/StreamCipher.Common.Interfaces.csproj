@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Collections\IObjectPool.cs" />
     <Compile Include="Command\ICommand.cs" />
     <Compile Include="Communication\CommunicationMode.cs" />
     <Compile Include="Communication\ConstantsEnums.cs" />
@@ -52,8 +53,9 @@
     <Compile Include="ActivityControl\IControlledActivity.cs" />
     <Compile Include="Communication\ICommunicationServiceConfig.cs" />
     <Compile Include="Communication\ICommunicationServiceBuilder.cs" />
+    <Compile Include="Communication\IDispatchWrapper.cs" />
     <Compile Include="Communication\IIncomingMessage.cs" />
-    <Compile Include="Communication\IMessageHandler.cs" />
+    <Compile Include="Communication\IMessageProcessor.cs" />
     <Compile Include="Communication\IMessageReceiverChannel.cs" />
     <Compile Include="Communication\IMessageDestination.cs" />
     <Compile Include="Communication\IMessageSenderChannel.cs" />

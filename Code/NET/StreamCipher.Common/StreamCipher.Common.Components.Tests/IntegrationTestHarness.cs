@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using StreamCipher.Common.Components.Tests.Async;
 using System.Threading;
+//using StreamCipher.Common.Components.Tests.Communication;
 using StreamCipher.Common.Ioc.DependencyResolution;
 using StreamCipher.Common.DependencyResolution;
 using StreamCipher.Common.Interfaces.Logging;
@@ -20,6 +21,8 @@ namespace StreamCipher.Common.Components.Tests
             dependencyManager.Register<ILoggingService, ConsoleLoggingService>(loggingService);
             ServiceLocator.Initialise(dependencyManager);
             
+            /*
+
             BackgroundQueue_Sequential_StopAbruptly test = new BackgroundQueue_Sequential_StopAbruptly();
             test.Run(args);
 
@@ -35,6 +38,9 @@ namespace StreamCipher.Common.Components.Tests
             BackgroundQueue_WaitForNextItemUntilStopped test5= new BackgroundQueue_WaitForNextItemUntilStopped();
             test5.Run(args);
             
+            */
+
+            //RabbitCommunicationServiceTests tc = new RabbitCommunicationServiceTests();
 
         }
     }

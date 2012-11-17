@@ -32,7 +32,12 @@ namespace StreamCipher.Common.Components.Tests
 
         public void Error(Type callerType, string errorMessage, Exception exception = null)
         {
-            if (_logLevel <= LoggingLevel.ERROR) Log(callerType.Name, "ERROR", errorMessage);
+            if (_logLevel <= LoggingLevel.ERROR)
+            {
+                var msg = errorMessage + "\n" + 
+                    (exception == null ? String.Empty : exception.Message + "\n" + exception.StackTrace);
+                Log(callerType.Name, "ERROR", msg);
+            }
         }
 
         public void Fatal(Type callerType, string fatalMessage)

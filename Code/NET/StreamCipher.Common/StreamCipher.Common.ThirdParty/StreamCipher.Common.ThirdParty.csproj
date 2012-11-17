@@ -66,6 +66,7 @@
   <ItemGroup>
     <Compile Include="Communication\RabbitMQ\BaseRabbitCommunicationChannel.cs" />
     <Compile Include="Communication\RabbitMQ\RabbitChannelFactory.cs" />
+    <Compile Include="Communication\RabbitMQ\RabbitMessageConsumer.cs" />
     <Compile Include="Communication\RabbitMQ\RabbitMessageReceiverChannel.cs" />
     <Compile Include="Communication\RabbitMQ\RabbitMessageSenderChannel.cs" />
     <Compile Include="DataInterchange\FormatterFactory.cs" />

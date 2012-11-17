@@ -10,9 +10,12 @@ namespace StreamCipher.Common.Interfaces.Communication
 
         void AddSenderChannel(IMessageSenderChannel senderChannel);
         void AddReceiverChannel(IMessageReceiverChannel receiverChannel);
+        void ActivatePool();
+
         IMessageSenderChannel GetSenderChannel();
         void PutSenderChannel(IMessageSenderChannel senderChannel);
-        void Subscribe(IMessageDestination topic, IMessageHandler messageHandler);
+        void Subscribe(IMessageDestination topic, Action<IIncomingMessage> incomingMessageHandler);
         void Unsubscribe(IMessageDestination topic);
+
     }
 }

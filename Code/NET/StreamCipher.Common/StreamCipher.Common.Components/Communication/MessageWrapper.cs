@@ -30,5 +30,25 @@ namespace StreamCipher.Common.Components.Communication
         {
             get { return _content; }
         }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null) return false;
+            MessageWrapper other = obj as MessageWrapper;
+            if (other == null) return false;
+            return ((other.Content.Equals(this.Content)) && (other.CorrelationId == this.CorrelationId));
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked // Overflow is fine, just wrap
+            {
+                int hash = 23;
+                // Suitable nullity checks etc, of course :)
+                hash = hash * 31 + Content.GetHashCode();
+                hash = hash * 31 + CorrelationId.GetHashCode();
+                return hash;
+            }
+        }
     }
 }

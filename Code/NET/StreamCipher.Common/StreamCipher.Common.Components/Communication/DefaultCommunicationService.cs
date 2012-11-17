@@ -34,7 +34,7 @@ namespace StreamCipher.Common.Components.Communication
 
         #region ICommunicationService
 
-        public ICommunicationServiceBuilder Initialise(CommunicationMode communicationMode, ICommunicationChannelFactory channelFactory)
+        public ICommunicationServiceBuilder Build(CommunicationMode communicationMode, ICommunicationChannelFactory channelFactory)
         {
             return new DefaultCommunicationServiceBuilder(this, communicationMode, channelFactory);
         }
@@ -71,10 +71,11 @@ namespace StreamCipher.Common.Components.Communication
             }
         }
 
-        public void Subscribe(CommunicationMode communicationMode, IMessageDestination topic, IMessageHandler messageHandler)
+        public void Subscribe(CommunicationMode communicationMode, IMessageDestination topic, 
+            Action<IIncomingMessage> incomingMessageHandler)
         {
             VerifyCommunicationModeExists(communicationMode);
-            _channelPools[communicationMode].Subscribe(topic, messageHandler);
+            _channelPools[communicationMode].Subscribe(topic, incomingMessageHandler);
         }
 
         public void Unsubscribe(CommunicationMode communicationMode, IMessageDestination topic)
@@ -129,6 +130,7 @@ namespace StreamCipher.Common.Components.Communication
             private ICommunicationChannelFactory _channelFactory;
             private ICommunicationServiceConfig _config;
             private Action<Exception> _defaultExceptionHandler;
+            private AtomicBoolean _isInitialised = new AtomicBoolean(false);
 
             public DefaultCommunicationServiceBuilder(DefaultCommunicationService svc, CommunicationMode communicationMode,
                 ICommunicationChannelFactory channelFactory)
@@ -142,35 +144,42 @@ namespace StreamCipher.Common.Components.Communication
 
             public ICommunicationServiceBuilder WithConfig(ICommunicationServiceConfig config)
             {
+                if (_isInitialised.Value) throw new InvalidOperationException("This communication service builder has already been used once.");
                 _config = config;
                 return this;
             }
 
             public ICommunicationServiceBuilder WithDefaultExceptionHandler(Action<Exception> handleException)
             {
+                if (_isInitialised.Value) throw new InvalidOperationException("This communication service builder has already been used once.");
                 _defaultExceptionHandler = handleException;
                 return this;
             }
 
             public void Now()
             {
-                //Initialising the channel pool for defined communication mode
-                var channelPool = new CommunicationChannelPool();
-                if (!_svc._channelPools.TryAdd(_mode, channelPool)) 
-                    throw new InvalidOperationException("Communication mode has already been initialised.");
-                //Adding sender channels
-                for (int i = 0; i < _config.TotalSenderChannels; i++)
+                if (_isInitialised.CompareAndSet(false, true))
                 {
-                    var senderChannel = _channelFactory.CreateMessageSenderChannel(_mode, _config,
-                                                                            _defaultExceptionHandler, i);
-                    channelPool.AddSenderChannel(senderChannel);
-                }
-                //Adding receiver channels
-                for (int i = 0; i < _config.TotalReceiverChannels; i++)
-                {
-                    var receiverChannel = _channelFactory.CreateMessageReceiverChannel(_mode, _config,
-                                                                               _defaultExceptionHandler, i);
-                    channelPool.AddReceiverChannel(receiverChannel);
+                    //Initialising the channel pool for defined communication mode
+                    var channelPool = new CommunicationChannelPool();
+                    if (!_svc._channelPools.TryAdd(_mode, channelPool))
+                        throw new InvalidOperationException("Communication mode has already been initialised.");
+                    //Adding sender channels
+                    for (int i = 0; i < _config.TotalSenderChannels; i++)
+                    {
+                        var senderChannel = _channelFactory.CreateMessageSenderChannel(_mode, _config,
+                                                                                       _defaultExceptionHandler, i);
+                        channelPool.AddSenderChannel(senderChannel);
+                    }
+                    //Adding receiver channels
+                    for (int i = 0; i < _config.TotalReceiverChannels; i++)
+                    {
+                        var receiverChannel = _channelFactory.CreateMessageReceiverChannel(_mode, _config,
+                                                                                           _defaultExceptionHandler, i);
+                        channelPool.AddReceiverChannel(receiverChannel);
+                    }
+                    //Activate channel pool
+                    channelPool.ActivatePool();
                 }
             }
 

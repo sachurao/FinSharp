@@ -13,12 +13,13 @@ namespace StreamCipher.Common.Interfaces.Communication
     /// </summary>
     public interface ICommunicationService: IDisposable
     {
-        ICommunicationServiceBuilder Initialise(CommunicationMode communicationMode, ICommunicationChannelFactory channelFactory);
+        ICommunicationServiceBuilder Build(CommunicationMode communicationMode, ICommunicationChannelFactory channelFactory);
 
         void Send(CommunicationMode communicationMode, IMessageDestination destination, IMessageWrapper message);
         IMessageWrapper SendRpc(CommunicationMode communicationMode, IMessageDestination destination, IMessageWrapper message);
 
-        void Subscribe(CommunicationMode communicationMode, IMessageDestination topic, IMessageHandler messageHandler);
+        void Subscribe(CommunicationMode communicationMode, IMessageDestination topic, 
+            Action<IIncomingMessage> incomingMessageHandler);
         void Unsubscribe(CommunicationMode communicationMode, IMessageDestination topic);        
     }
 }

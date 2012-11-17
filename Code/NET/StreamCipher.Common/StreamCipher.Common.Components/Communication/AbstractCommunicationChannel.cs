@@ -35,7 +35,7 @@ namespace StreamCipher.Common.Components.Communication
             _formatter = formatter;
             _config = config;
             _defaultExceptionHandler = defaultExceptionHandler;
-            _connectionId = String.Format("{0}_{1}_{2}_{3}_{4}",
+            _connectionId = String.Format("{0}/{1}_{2}_{3}_{4}",
                 config.ConnectionIdPrefix,
                 System.Environment.UserName,
                 System.Environment.MachineName,

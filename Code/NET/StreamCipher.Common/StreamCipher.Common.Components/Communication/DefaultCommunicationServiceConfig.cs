@@ -31,7 +31,7 @@ namespace StreamCipher.Common.Components.Communication
         }
 
         public DefaultCommunicationServiceConfig(String serviceBusAddress): this(serviceBusAddress, 
-            3, 1, System.AppDomain.CurrentDomain.FriendlyName)
+            3, 1, "StreamCipher")
         { 
         }
         #endregion

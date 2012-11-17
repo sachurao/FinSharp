@@ -43,9 +43,12 @@
     <Compile Include="Async\BackgroundQueue.cs" />
     <Compile Include="Async\BackgroundQueueConfig.cs" />
     <Compile Include="Communication\AbstractCommunicationChannel.cs" />
+    <Compile Include="Communication\DefaultMessageProcessor.cs" />
     <Compile Include="Communication\CommunicationChannelPool.cs" />
     <Compile Include="Communication\DefaultCommunicationService.cs" />
     <Compile Include="Communication\DefaultCommunicationServiceConfig.cs" />
+    <Compile Include="Communication\IncomingMessageManager.cs" />
+    <Compile Include="Communication\IncomingMessage.cs" />
     <Compile Include="Communication\MessageDestination.cs" />
     <Compile Include="Communication\MessageWrapper.cs" />
     <Compile Include="Logging\Logger.cs" />
@@ -65,7 +68,9 @@
       <Name>StreamCipher.Common.Utilities</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Pooling\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>xcopy $(TargetDir)$(TargetName).* $(ProjectDir)..\..\Output /y</PostBuildEvent>

@@ -41,6 +41,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Concurrency\AtomicBoolean.cs" />
+    <Compile Include="Concurrency\ObjectPool.cs" />
+    <Compile Include="Concurrency\ThreadSafe.cs" />
     <Compile Include="DataInterchange\Utf8Formatter.cs" />
     <Compile Include="EnumerableExtensions.cs" />
     <Compile Include="ObjectType\TypeUtils.cs" />

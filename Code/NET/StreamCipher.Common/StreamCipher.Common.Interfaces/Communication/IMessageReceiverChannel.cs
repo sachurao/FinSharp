@@ -7,7 +7,7 @@ namespace StreamCipher.Common.Interfaces.Communication
 {
     public interface IMessageReceiverChannel:ICommunicationChannel
     {
-        void Subscribe(IMessageDestination topicOrQueue, IMessageHandler messageHandler);
+        void Subscribe(IMessageDestination topicOrQueue, Action<IIncomingMessage> incomingMessageHandler);
         void Unsubscribe(IMessageDestination topicOrQueue);
         void UnsubscribeAll();
         IEnumerable<IMessageDestination> Subscriptions { get; }
