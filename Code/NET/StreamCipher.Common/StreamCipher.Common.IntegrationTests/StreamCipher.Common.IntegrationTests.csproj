@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{D11996FF-C1C7-4E24-ACBD-125607FCF71E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>StreamCipher.Common.IntegrationTests</RootNamespace>
+    <AssemblyName>StreamCipher.Common.IntegrationTests</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="nunit.framework, Version=2.6.1.12217, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\NUnit.2.6.1\lib\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="TechTalk.SpecFlow">
+      <HintPath>..\..\packages\SpecFlow.1.9.0\lib\net35\TechTalk.SpecFlow.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Communication\RabbitMQ.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RabbitMQ.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Communication\RabbitMqCommunication.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RabbitMqCommunication.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Communication\RabbitMQSteps.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="Communication\RabbitMQ.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>RabbitMQ.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Communication\RabbitMqCommunication.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>RabbitMqCommunication.feature.cs</LastGenOutput>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\StreamCipher.Common.Components\StreamCipher.Common.Components.csproj">
+      <Project>{B3C75567-DF02-4209-8D96-D97E8825A509}</Project>
+      <Name>StreamCipher.Common.Components</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\StreamCipher.Common.Interfaces.Tests\StreamCipher.Common.Interfaces.Tests.csproj">
+      <Project>{A0075D9E-9B68-45D6-A043-C3CD767833A1}</Project>
+      <Name>StreamCipher.Common.Interfaces.Tests</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\StreamCipher.Common.Interfaces\StreamCipher.Common.Interfaces.csproj">
+      <Project>{4B616EB0-BDB5-4C49-B180-9FAF1E8C677F}</Project>
+      <Name>StreamCipher.Common.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\StreamCipher.Common.Ioc\StreamCipher.Common.Ioc.csproj">
+      <Project>{0FF6B7ED-BA7A-4699-8B53-583DB9D84E60}</Project>
+      <Name>StreamCipher.Common.Ioc</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\StreamCipher.Common.ThirdParty\StreamCipher.Common.ThirdParty.csproj">
+      <Project>{5F0D8CCD-FE0F-4EEC-8CDD-EB0CCC92E639}</Project>
+      <Name>StreamCipher.Common.ThirdParty</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
