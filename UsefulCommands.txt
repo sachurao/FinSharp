@@ -1,0 +1,64 @@
+--Starting up
+Install git and start git bash
+git config --global user.name "Sachin Rao"
+git config --global user.email "sachurao@gmail.com"
+
+
+-- Clone FinSharp.git
+
+cd <<local_workspace_area>>
+git clone git://github.com/sachurao/FinSharp.git
+
+-- Add a new remote destination
+git remote add destination git@github.com:sachurao/FinSharp.git
+cd FinSharp
+
+-- Start working
+git checkout develop
+
+--Create a new feature branch
+git checkout -b <<Feature_Name>> develop
+
+-- Modify a file in the feature branch
+
+-- Stage a file
+git add <<Specific_File_Name>> (or git add .)
+git status
+git diff --staged
+git reset <<Specific_File_Name>> (to unstage file)
+
+
+-- Commit 
+git commit -m "Comment..."
+git commit -am "Comment..." (to include any unstaged files in the commit)
+
+
+-- Regularly get updates on the feature branch to get changes done by other developers
+git commit -am "Comment" (commit your changes to the local branch)
+git pull origin <<Feature_Branch>>
+
+--If there are unrelated changes made by another developer and submitted to the remote
+repository, this will get them down to your local branch.  If there are related changes,
+you will get a conflict and you will now need to resolve the conflict by doing a merge.
+
+git status (to find out which files had to fixed and then go and fix it).
+git commit -am "Merging changes from remote repository"
+
+
+-- Push changes to the repository
+git push destination <<Feature_Branch>>
+
+--Merge changes to develop branch or master branch
+git checkout develop
+git merge --no-ff <<Feature_Branch>> (merging all changes on the feature branch as a single checkin).
+git push destination develop (pushing changes to the remote repository)
+
+--Deleting a branch
+git branch -d <<Feature_Branch>>
+git push destination :<<Branch_Name>> (deleting branch in remote repository).
+
+
+
+http://nvie.com/posts/a-successful-git-branching-model/
+
+
