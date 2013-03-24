@@ -68,6 +68,7 @@
     </Compile>
     <Compile Include="Pooling\ObjectPoolSteps.cs" />
     <Compile Include="Pooling\DummyPoolableObject.cs" />
+    <Compile Include="Pooling\DummyObjectPool.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

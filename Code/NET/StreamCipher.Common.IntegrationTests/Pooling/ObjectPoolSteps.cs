@@ -9,7 +9,7 @@ namespace StreamCipher.Common.IntegrationTests.Pooling
     public class ObjectPoolSteps
     {
         private DummyPoolableObjectFactory _factory;
-        private IObjectPool<DummyPoolableObject> _objectPool;
+        private DummyObjectPool _objectPool;
         private IPoolableObject _borrowedObject = null;
         private DummyPoolableObject _externallyCreatedObject;
 
@@ -31,7 +31,7 @@ namespace StreamCipher.Common.IntegrationTests.Pooling
             }
             .Build();
 
-            _objectPool = new DefaultObjectPool<DummyPoolableObject>(config);
+            _objectPool = new DummyObjectPool(config);
             
         }
         
@@ -46,6 +46,13 @@ namespace StreamCipher.Common.IntegrationTests.Pooling
         {
             _borrowedObject = _objectPool.BorrowObject();
         }
+
+        [When(@"(.*) objects in the pool have become invalid")]
+        public void WhenObjectsInThePoolHaveBecomeInvalid(int p0)
+        {
+            _objectPool.Invalidate(p0);
+        }
+
 
         
         [Then(@"I get an object")]
@@ -65,6 +72,13 @@ namespace StreamCipher.Common.IntegrationTests.Pooling
         {
             Assert.AreEqual(p0, _factory.TotalCreated);
         }
+
+        [Then(@"The total items readily available equals (.*)")]
+        public void ThenTheTotalItemsReadilyAvailableEquals(int p0)
+        {
+            Assert.AreEqual(p0, _objectPool.TotalReadilyAvailable);
+        }
+
 
         [When(@"I return an object")]
         public void WhenIReturnAnObject()

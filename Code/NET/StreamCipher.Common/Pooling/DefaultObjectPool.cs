@@ -16,8 +16,8 @@ namespace StreamCipher.Common.Pooling
     {
         #region Member Variables
 
-        private readonly ObjectPoolConfig<T> _config;
-        private readonly ConcurrentBag<T> _poolImpl;
+        protected readonly ObjectPoolConfig<T> _config;
+        protected readonly ConcurrentBag<T> _poolImpl;
         private readonly SemaphoreSlim _availabilityGate;
 
         #endregion
@@ -63,7 +63,6 @@ namespace StreamCipher.Common.Pooling
                         Logger.Debug(this, "Retiring an object retrieved from the pool because it is not valid to use.");
                         _config.PoolableObjectFactory.Retire(retVal);
                         retVal = default(T);
-                        _availabilityGate.Release();
                         continue;
                     }
                     return retVal;
@@ -96,10 +95,17 @@ namespace StreamCipher.Common.Pooling
                 _availabilityGate.Release();
                 _poolImpl.Add(poolableObject);
             }
-            catch (SemaphoreFullException sfe)
+            catch (SemaphoreFullException)
             {
-                Logger.Warn(this, "Semaphore is already full.  Hence retiring the object that was returned.");
-                _config.PoolableObjectFactory.Retire(poolableObject);
+                if (_config.MaximumObjectsActiveOnStartup < _config.Capacity)
+                {
+                    _poolImpl.Add(poolableObject);
+                }
+                else
+                {
+                    Logger.Warn(this, "Pool is already full.  Hence retiring the object that was returned.");
+                    _config.PoolableObjectFactory.Retire(poolableObject);
+                }
             }
 
         }
