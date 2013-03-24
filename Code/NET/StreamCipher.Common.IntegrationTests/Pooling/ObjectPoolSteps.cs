@@ -65,5 +65,10 @@ namespace StreamCipher.Common.IntegrationTests.Pooling
             Assert.AreEqual(p0, _factory.TotalCreated);
         }
 
+        public void AddingRandomMethod()
+        {
+            //This does nothing...
+        }
+
     }
 }
