@@ -1,1 +1,0 @@
-﻿<%@ ServiceHost Language="C#" Debug="true" Service="StreamCipher.FinSharp.Services.ReferenceData.RefDataService" CodeBehind="RefDataService.svc.cs" %>
