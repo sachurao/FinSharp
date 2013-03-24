@@ -21,4 +21,12 @@ Scenario: Borrowing an object when the pool is empty
 	And The total number of items that can still be borrowed from the pool is 9
 	And The total objects created by the factory equals 1
 
+@objectpool
+Scenario: Returning an object when the pool is full
+	Given I have created a pool with a capacity of 10 and 10 available on startup
+	And I have activated the pool
+	When I return an object
+	Then The object is retired
+
+
 

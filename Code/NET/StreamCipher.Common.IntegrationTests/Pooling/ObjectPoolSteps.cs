@@ -11,6 +11,7 @@ namespace StreamCipher.Common.IntegrationTests.Pooling
         private DummyPoolableObjectFactory _factory;
         private IObjectPool<DummyPoolableObject> _objectPool;
         private IPoolableObject _borrowedObject = null;
+        private DummyPoolableObject _externallyCreatedObject;
 
         public ObjectPoolSteps()
         {
@@ -63,6 +64,19 @@ namespace StreamCipher.Common.IntegrationTests.Pooling
         public void ThenTheTotalObjectsCreatedByTheFactoryEquals(int p0)
         {
             Assert.AreEqual(p0, _factory.TotalCreated);
+        }
+
+        [When(@"I return an object")]
+        public void WhenIReturnAnObject()
+        {
+            _externallyCreatedObject= new DummyPoolableObject(true);
+            _objectPool.ReturnObject(_externallyCreatedObject);
+        }
+
+        [Then(@"The object is retired")]
+        public void ThenTheObjectIsRetired()
+        {
+            Assert.IsTrue(_externallyCreatedObject.IsRetired);
         }
 
     }
