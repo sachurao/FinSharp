@@ -24,6 +24,7 @@ namespace StreamCipher.Common.Pooling
             private int _capacity = Int32.MaxValue;
             private int _maximumObjectsActiveOnStartup = 0; //completely lazy by default
             private IPoolableObjectFactory<T> _factory;
+            private IEqualityComparer<T> _equalityComparer; 
 
             public bool SetValidateBeforeBorrow
             {
@@ -44,19 +45,25 @@ namespace StreamCipher.Common.Pooling
             {
                 set { _factory = value; }
             }
+
+            public IEqualityComparer<T> EqualityComparer
+            {
+                set { _equalityComparer = value; }
+            }
             
             public ObjectPoolConfig<T> Build()
             {
                 if (_factory == null) throw new ArgumentNullException("Factory", "Need a valid factory for the pool to be able to create objects");
-                if (_capacity <= 0) throw new ArgumentException("Capacity has to be greater than zero.", "Capacity");
-                if (_maximumObjectsActiveOnStartup > _capacity) throw new ArgumentException("Max objects available on startup cannot be more than pool capacity");
+                if (_capacity <= 0) throw new ArgumentOutOfRangeException("Capacity has to be greater than zero.", "Capacity");
+                if (_maximumObjectsActiveOnStartup > _capacity) throw new ArgumentOutOfRangeException("Max objects available on startup cannot be more than pool capacity");
 
                 var retVal = new ObjectPoolConfig<T>()
                     {
                         PoolableObjectFactory = _factory,
                         ValidateBeforeBorrow = _validateBeforeBorrow,
                         Capacity = _capacity,
-                        MaximumObjectsActiveOnStartup = _maximumObjectsActiveOnStartup
+                        MaximumObjectsActiveOnStartup = _maximumObjectsActiveOnStartup,
+                        EqualityComparer = _equalityComparer
                     };
                 
                 return retVal;
@@ -75,6 +82,8 @@ namespace StreamCipher.Common.Pooling
         public int MaximumObjectsActiveOnStartup { get; private set; }
 
         public IPoolableObjectFactory<T> PoolableObjectFactory { get; private set; }
+
+        public IEqualityComparer<T> EqualityComparer { get; private set; } 
 
         #endregion
 

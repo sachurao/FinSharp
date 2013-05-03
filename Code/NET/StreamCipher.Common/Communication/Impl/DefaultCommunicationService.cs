@@ -1,185 +1,129 @@
-using System;
-using System.Collections.Concurrent;
-using StreamCipher.Common.Logging;
-using StreamCipher.Common.Utilities.Concurrency;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using StreamCipher.Common.Async;
+using StreamCipher.Common.Interfaces.DataInterchange;
+using StreamCipher.Common.Pooling;
+using StreamCipher.Common.Utilities;
 
 namespace StreamCipher.Common.Communication.Impl
 {
-    /// <summary>
-    /// Facade over all communication actions.  Set up using CommunicationServiceBuilder and accessed via StreamCipherServiceLocator.
-    /// </summary>
-    public class DefaultCommunicationService:ICommunicationService
+    public class DefaultCommunicationService: ControlledComponent, ICommunicationService
     {
         #region Member Variables
 
-        private readonly ConcurrentDictionary<CommunicationMode, ICommunicationChannelPool> _channelPools;
-        private bool _disposed = false;
-        
+        private readonly IMessageSenderChannelPool _senderChannelPool;
+        private readonly IMessageReceiverChannelPool _receiverChannelPool; 
+
         #endregion
 
         #region Init
-        
-        public DefaultCommunicationService()
+
+        public DefaultCommunicationService(ICommunicationServiceConfig config,
+            IPoolableObjectFactory<IMessageSenderChannel> senderChannelFactory,
+            IPoolableObjectFactory<IMessageReceiverChannel> receiverChannelFactory, 
+            string name = "DefaultCommunicationService",
+            Int32 instanceNum = 1) : base(name, instanceNum)
         {
-            _channelPools = new ConcurrentDictionary<CommunicationMode, ICommunicationChannelPool>();
+            var senderChannelPoolConfig = new ObjectPoolConfig<IMessageSenderChannel>.Builder()
+                {
+                    SetValidateBeforeBorrow = true,
+                    SetCapacity = config.TotalSenderChannels,
+                    SetMaximumObjectsActiveOnStartup = config.TotalSenderChannels,
+                    Factory = senderChannelFactory
+                }.Build();
+            _senderChannelPool = new DefaultMessageSenderChannelPool(senderChannelPoolConfig);
+
+            var receiverChannelPoolConfig = new ObjectPoolConfig<IMessageReceiverChannel>.Builder()
+            {
+                SetCapacity = config.TotalReceiverChannels,
+                SetMaximumObjectsActiveOnStartup = config.TotalReceiverChannels,
+                SetValidateBeforeBorrow = true,
+                Factory = receiverChannelFactory
+            }.Build();
+            _receiverChannelPool = new DefaultMessageReceiverChannelPool(
+                receiverChannelPoolConfig, config.UniqueResponseTopic);
         }
-        
+
         #endregion
 
         #region ICommunicationService
 
-        public ICommunicationServiceBuilder Build(CommunicationMode communicationMode, ICommunicationChannelFactory channelFactory)
+        public void Send(IMessageDestination topicOrQueue, IMessageWrapper message,
+                         Action<IIncomingMessage> responseHandler = null)
         {
-            return new DefaultCommunicationServiceBuilder(this, communicationMode, channelFactory);
-        }
-
-        public void Send(CommunicationMode communicationMode, IMessageDestination destination, IMessageWrapper message,
-            Action<IIncomingMessage> responseHandler = null)
-        {
-            VerifyCommunicationModeExists(communicationMode);
-
-            IMessageSenderChannel senderChannel = null;
-            try
+            _senderChannelPool.UsingObjectFromPool(
+            senderChannel =>
             {
-                ICommunicationChannelPool channelPool = _channelPools[communicationMode];
-                senderChannel = channelPool.GetSenderChannel();
                 if (responseHandler != null)
                 {
-                    channelPool.ResponseProcessor.AddSpecificResponseHandler(message.CorrelationId, responseHandler);
-                    senderChannel.Send(destination, message, channelPool.UniqueResponseDestination);
+                    _receiverChannelPool.ResponseProcessor.
+                        AddSpecificResponseHandler(message.CorrelationId, responseHandler);
+                    senderChannel.Send(topicOrQueue, message, 
+                        _receiverChannelPool.UniqueResponseDestination);
                 }
                 else
                 {
-                    senderChannel.Send(destination, message);
+                    senderChannel.Send(topicOrQueue, message);
                 }
-            }
-            finally
+            });
+        }
+
+        public Task<IIncomingMessage> SendAsync(IMessageDestination topicOrQueue, 
+            IMessageWrapper message)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Subscribe(IMessageDestination topicOrQueue, Action<IIncomingMessage> incomingMessageHandler)
+        {
+            _receiverChannelPool.UsingObjectFromPool(c => c.Subscribe(
+                topicOrQueue, incomingMessageHandler));
+        }
+
+        public void Unsubscribe(IMessageDestination topicOrQueue)
+        {
+            bool unsubscribed = false;
+            while (!unsubscribed)
             {
-                if (senderChannel != null) _channelPools[communicationMode].PutSenderChannel(senderChannel);
+                _receiverChannelPool.UsingObjectFromPool(
+                    rc =>
+                        {
+                            if (rc.Subscriptions
+                                  .Any(msgDest => msgDest.Address.Equals(topicOrQueue.Address)))
+                            {
+                                rc.Unsubscribe(topicOrQueue);
+                                unsubscribed = true;
+                            }
+                        });
             }
-        }
-
-        
-        public void Subscribe(CommunicationMode communicationMode, IMessageDestination topic, 
-            Action<IIncomingMessage> incomingMessageHandler)
-        {
-            VerifyCommunicationModeExists(communicationMode);
-            _channelPools[communicationMode].Subscribe(topic, incomingMessageHandler);
-        }
-
-        public void Unsubscribe(CommunicationMode communicationMode, IMessageDestination topic)
-        {
-            VerifyCommunicationModeExists(communicationMode);
-            _channelPools[communicationMode].Unsubscribe(topic);
-        }        
-
-        #endregion
-
-        #region IDisposable
-
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!_disposed)
-            {
-                if (disposing)
-                {
-                    Logger.Info(this, "Disposing communication service.");
-                    foreach (var pool in _channelPools.Values)
-                    {
-                        pool.Dispose();
-                    }
-                }
-                _disposed = true;
-            }
-        }
-
-
-        #endregion
-
-        #region Private Methods
-
-        private void VerifyCommunicationModeExists(CommunicationMode communicationMode)
-        {
-            if (!_channelPools.ContainsKey(communicationMode))
-                throw new InvalidOperationException("Communication Service must be initialised first for this communication mode.");
         }
 
         #endregion
 
-        class DefaultCommunicationServiceBuilder:ICommunicationServiceBuilder
+        #region ControlledComponent
+
+        protected override void StartCore()
         {
-            private DefaultCommunicationService _svc;
-            private CommunicationMode _mode;
-            private ICommunicationChannelFactory _channelFactory;
-            private ICommunicationServiceConfig _config;
-            private Action<Exception> _defaultExceptionHandler;
-            private AtomicBoolean _isInitialised = new AtomicBoolean(false);
 
-            public DefaultCommunicationServiceBuilder(DefaultCommunicationService svc, CommunicationMode communicationMode,
-                ICommunicationChannelFactory channelFactory)
-            {
-                _svc = svc;
-                _mode = communicationMode;
-                _channelFactory = channelFactory;
-            }
-
-            #region Implementation of ICommunicationServiceBuilder
-
-            public ICommunicationServiceBuilder WithConfig(ICommunicationServiceConfig config)
-            {
-                if (_isInitialised.Value) throw new InvalidOperationException("This communication service builder has already been used once.");
-                _config = config;
-                return this;
-            }
-
-            public ICommunicationServiceBuilder WithDefaultExceptionHandler(Action<Exception> handleException)
-            {
-                if (_isInitialised.Value) throw new InvalidOperationException("This communication service builder has already been used once.");
-                _defaultExceptionHandler = handleException;
-                return this;
-            }
-
-            public void Now()
-            {
-                if (_isInitialised.CompareAndSet(false, true))
-                {
-                    //Initialising the channel pool for defined communication mode
-                    var channelPool = new CommunicationChannelPool();
-                    if (!_svc._channelPools.TryAdd(_mode, channelPool))
-                        throw new InvalidOperationException("Communication mode has already been initialised.");
-                    //Adding sender channels
-                    for (int i = 0; i < _config.TotalSenderChannels; i++)
-                    {
-                        var senderChannel = _channelFactory.CreateMessageSenderChannel(_mode, _config,
-                                                                                       _defaultExceptionHandler, i);
-                        channelPool.AddSenderChannel(senderChannel);
-                    }
-                    //Adding receiver channels
-                    for (int i = 0; i < _config.TotalReceiverChannels; i++)
-                    {
-                        var receiverChannel = _channelFactory.CreateMessageReceiverChannel(_mode, _config,
-                                                                                           _defaultExceptionHandler, i);
-                        channelPool.AddReceiverChannel(receiverChannel);
-                    }
-
-                    //Adding response topic
-                    var responseDestination = new MessageDestination(_config.UniqueResponseTopic);
-                    channelPool.Subscribe(responseDestination,
-                            channelPool.ResponseProcessor.ProcessMessageReceived);
-                    channelPool.UniqueResponseDestination = responseDestination;
-                }
-            }
-            
-            #endregion
+            _senderChannelPool.Start();
+            _receiverChannelPool.Start();
+            _receiverChannelPool.UsingObjectFromPool(
+                rc => rc.Subscribe(_receiverChannelPool.UniqueResponseDestination,
+                    _receiverChannelPool.ResponseProcessor.ProcessMessageReceived));
+            base.StartCore();
         }
 
+        protected override void ShutdownCore()
+        {
+            _senderChannelPool.Shutdown();
+            _receiverChannelPool.Shutdown();
+            base.ShutdownCore();
+        }
+
+        #endregion
 
     }
 }

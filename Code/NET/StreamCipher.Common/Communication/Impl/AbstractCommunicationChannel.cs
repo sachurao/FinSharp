@@ -9,47 +9,37 @@ namespace StreamCipher.Common.Communication.Impl
     {
         #region Member Variables
 
-        private readonly ServiceBusType _messagingPlatform;
-        protected IDataInterchangeFormatter _formatter;
         protected ICommunicationServiceConfig _config;
-        protected string _connectionId;
-        protected Action<Exception> _defaultExceptionHandler;
-        protected AtomicBoolean _isConnected = new AtomicBoolean(false);
+        protected readonly string _connectionId;
+        protected AtomicBoolean _hasConnectedOnce = new AtomicBoolean(false);
 
         #endregion
 
         #region Init
         
-        protected AbstractCommunicationChannel(ServiceBusType messagingPlatform,
-            IDataInterchangeFormatter formatter,
-            ICommunicationServiceConfig config,
-            String connectionIdSuffix,
-            Action<Exception> defaultExceptionHandler)
+        protected AbstractCommunicationChannel(ICommunicationServiceConfig config, String connectionIdSuffix)
         {
-            _messagingPlatform = messagingPlatform;
-            _formatter = formatter;
             _config = config;
-            _defaultExceptionHandler = defaultExceptionHandler;
             _connectionId = String.Format("{0}/{1}_{2}_{3}_{4}",
                 config.ConnectionIdPrefix,
                 System.Environment.UserName,
                 System.Environment.MachineName,
                 System.Diagnostics.Process.GetCurrentProcess().Id.ToString(CultureInfo.InvariantCulture),
                 connectionIdSuffix);
-        } 
+        }
 
         #endregion
         
         #region ICommunicationChannel
 
-        public ServiceBusType MessagingPlatform
-        {
-            get { return _messagingPlatform; }
-        }
-
         public IDataInterchangeFormatter Formatter
         {
-            get { return _formatter; }
+            get { return _config.Formatter; }
+        }
+
+        public bool IsValidToUse
+        {
+            get { return this.IsConnected; }
         }
 
         #endregion
@@ -63,7 +53,7 @@ namespace StreamCipher.Common.Communication.Impl
 
         public void Connect()
         {
-            if (_isConnected.CompareAndSet(false, true))
+            if (_hasConnectedOnce.CompareAndSet(false, true))
             {
                 ConnectCore();
             }
@@ -71,7 +61,7 @@ namespace StreamCipher.Common.Communication.Impl
 
         public void Disconnect()
         {
-            if (_isConnected.CompareAndSet(true, false))
+            if (_hasConnectedOnce.CompareAndSet(true, false))
             {
                 DisconnectCore();
             }
@@ -79,11 +69,23 @@ namespace StreamCipher.Common.Communication.Impl
 
         public bool IsConnected
         {
-            get { return _isConnected.Value && IsConnectedCore(); }
+            get { return _hasConnectedOnce.Value && IsConnectedCore(); }
         }
 
         #endregion
-        
+
+        public override bool Equals(object obj)
+        {
+            var other = obj as AbstractCommunicationChannel;
+            if (other == null) return false;
+            return _connectionId == other.ConnectionId;
+        }
+
+        public override int GetHashCode()
+        {
+            return _connectionId.GetHashCode();
+        }
+
         #region Abstract Methods
         
         protected abstract void ConnectCore();

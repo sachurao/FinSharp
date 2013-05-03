@@ -1,78 +1,88 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using StreamCipher.Common.Interfaces.DataInterchange;
 
 namespace StreamCipher.Common.Communication.Impl
 {
     public class DefaultCommunicationServiceConfig : ICommunicationServiceConfig
     {
-        #region Member Variables
-
-        private String _connectionIdPrefix;
-        private String _serviceBusAddress;
-        private String _uniqueResponseTopic;
-        private int _totalSenderChannels;
-        private int _totalReceiverChannels;
-        private IDictionary<String, String> _customProps = new Dictionary<String, String>();
-        
-        #endregion
-
         #region Init
-        
-        public DefaultCommunicationServiceConfig(string serviceBusAddress = "localhost", 
-            string connectionIdPrefix = "StreamCipher",
-            int totalSenderChannels = 3, 
-            int totalReceiverChannels = 1,
-            string uniqueResponseTopic = null)
+
+        private DefaultCommunicationServiceConfig()
         {
-            _serviceBusAddress = serviceBusAddress;
-            _totalSenderChannels = totalSenderChannels;
-            _totalReceiverChannels = totalReceiverChannels;
-            _connectionIdPrefix = connectionIdPrefix;
-            _uniqueResponseTopic = !String.IsNullOrEmpty(uniqueResponseTopic)
-                                       ? uniqueResponseTopic
-                                       : String.Format("streamcipher.response.{0}_{1}_{2}",
-                                                       connectionIdPrefix,
-                                                       Environment.MachineName,
-                                                       Process.GetCurrentProcess().Id);
+            
+        }
+
+        public class Builder
+        {
+            public string SetServiceBusAddress { private get; set; }
+            public string SetConnectionIdPrefix { private get; set; }
+            public string SetUniqueResponseTopic { private get; set; }
+            public int SetTotalSenderChannels { private get; set; }
+            public int SetTotalReceiverChannels { private get; set; }
+            private IDictionary<String, String> CustomProps { get; set; } 
+            public IDataInterchangeFormatter SetFormatter { private get; set; }
+            public Action<Exception> SetDefaultExceptionHandler { private get; set; }
+
+            public Builder()
+            {
+                SetConnectionIdPrefix = "StreamCipher";
+                SetTotalSenderChannels = 3;
+                SetTotalReceiverChannels = 1;
+                CustomProps = new Dictionary<string, string>();
+
+            }
+
+            public IDictionary<String, String> ImportCustomProps
+            {
+                set
+                {
+                    CustomProps = new Dictionary<string, string>(value);
+                }
+            }
+
+            public DefaultCommunicationServiceConfig Build()
+            {
+                var retVal =  new DefaultCommunicationServiceConfig()
+                    {
+                        ServiceBusAddress = SetServiceBusAddress,
+                        ConnectionIdPrefix = SetConnectionIdPrefix,
+                        UniqueResponseTopic = SetUniqueResponseTopic,
+                        TotalSenderChannels = SetTotalSenderChannels,
+                        TotalReceiverChannels = SetTotalReceiverChannels,
+                        CustomProps = CustomProps,
+                        Formatter = SetFormatter,
+                        DefaultExceptionHandler = SetDefaultExceptionHandler
+                    };
+                return retVal;
+            }
+            
         }
 
         #endregion
 
         #region ICommunicationServiceConfig
 
-        public string ServiceBusAddress
-        {
-            get { return _serviceBusAddress; }
-        }
+        public string ServiceBusAddress { get; private set; }
 
-        public string ConnectionIdPrefix
-        {
-            get { return _connectionIdPrefix; }
-        }
+        public string ConnectionIdPrefix { get; private set; }
 
-        public int TotalSenderChannels
-        {
-            get { return _totalSenderChannels; }
-        }
+        public string UniqueResponseTopic { get; private set; }
 
-        public int TotalReceiverChannels
-        {
-            get { return _totalReceiverChannels; }
-        }
+        public int TotalSenderChannels { get; private set; }
 
-        public IDictionary<String, String> CustomProps
-        {
-            get { return _customProps; }
-        }
+        public int TotalReceiverChannels { get; private set; }
 
-        public string UniqueResponseTopic
-        {
-            get { return _uniqueResponseTopic; }
-        }
+        public IDictionary<string, string> CustomProps { get; private set; }
+
+        public IDataInterchangeFormatter Formatter { get; private set; }
+        
+        public Action<Exception> DefaultExceptionHandler { get; private set; }
 
         #endregion
 
-        
     }
 }

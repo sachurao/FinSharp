@@ -2,7 +2,6 @@ using System;
 using System.Reflection;
 using RabbitMQ.Client;
 using StreamCipher.Common.Communication.Impl;
-using StreamCipher.Common.Interfaces.DataInterchange;
 using StreamCipher.Common.Logging;
 using StreamCipher.Common.Utilities.Concurrency;
 
@@ -14,27 +13,22 @@ namespace StreamCipher.Common.Communication.ThirdParty.RabbitMQ
 
         protected const String EXCHANGE_NAME = "StreamCipher";
         protected IConnection _connection;
-        
-        //TODO: Ensure threadsafe access to messaging session.
-        protected ThreadSafe<IModel> _session;
+        protected ExclusiveAccess<IModel> _session;
         private MemberInfo[] memberInfos = typeof (ConnectionFactory).GetMembers(BindingFlags.Instance|BindingFlags.Public);
 
         #endregion
         
         #region Init
 
-        protected BaseRabbitCommunicationChannel(IDataInterchangeFormatter formatter,
-            ICommunicationServiceConfig config,
-            String connectionIdSuffix,
-            Action<Exception> defaultExceptionHandler) :
-            base(ServiceBusType.RABBITMQ, formatter, config, connectionIdSuffix, defaultExceptionHandler)
+        protected BaseRabbitCommunicationChannel(ICommunicationServiceConfig config, 
+            String connectionIdSuffix) : base(config, connectionIdSuffix)
         {
         }
 
         #endregion
         
         #region AbstractCommunicationChannel
-        
+
         protected override void ConnectCore()
         {
             var connFactory = new ConnectionFactory();
@@ -73,7 +67,7 @@ namespace StreamCipher.Common.Communication.ThirdParty.RabbitMQ
             
             //You can create multiple channels or sessions on the same connection... although not sure what that means.
             //Using one session per connection here.
-            _session = new ThreadSafe<IModel>(_connection.CreateModel());
+            _session = new ExclusiveAccess<IModel>(_connection.CreateModel());
             _session.Use.ExchangeDeclare(EXCHANGE_NAME, ExchangeType.Topic, true);
         }
 

@@ -19,9 +19,9 @@ namespace StreamCipher.Common.IntegrationTests.Pooling
             return new DummyPoolableObject();
         }
 
-        public void Retire(DummyPoolableObject t)
+        public void Retire(DummyPoolableObject item)
         {
-            t.Retire();
+            item.Retire();
         }
 
         public int TotalCreated

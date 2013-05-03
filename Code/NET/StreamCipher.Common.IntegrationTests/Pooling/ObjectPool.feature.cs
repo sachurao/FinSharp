@@ -66,27 +66,67 @@ namespace StreamCipher.Common.IntegrationTests.Pooling
         }
         
         [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Borrowing an object when the pool is not activated")]
+        [NUnit.Framework.CategoryAttribute("objectpool")]
+        public virtual void BorrowingAnObjectWhenThePoolIsNotActivated()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Borrowing an object when the pool is not activated", new string[] {
+                        "objectpool"});
+#line 7
+this.ScenarioSetup(scenarioInfo);
+#line 8
+ testRunner.Given("I have created a pool with a capacity of 10 and 1 available on startup", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 9
+ testRunner.Then("Trying to borrow an object throws an InvalidOperationException", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute(": Returning an object when the pool after the pool is deactivated")]
+        [NUnit.Framework.CategoryAttribute("objectpool")]
+        public virtual void ReturningAnObjectWhenThePoolAfterThePoolIsDeactivated()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo(": Returning an object when the pool after the pool is deactivated", new string[] {
+                        "objectpool"});
+#line 12
+this.ScenarioSetup(scenarioInfo);
+#line 13
+ testRunner.Given("I have created a pool with a capacity of 10 and 1 available on startup", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 14
+ testRunner.And("I have activated the pool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 15
+ testRunner.When("I borrow an object", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 16
+ testRunner.And("The pool is deactivated", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 17
+ testRunner.Then("Trying to return an object throws an InvalidOperationException", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
         [NUnit.Framework.DescriptionAttribute("Borrowing an object when the pool is not empty")]
         [NUnit.Framework.CategoryAttribute("objectpool")]
         public virtual void BorrowingAnObjectWhenThePoolIsNotEmpty()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Borrowing an object when the pool is not empty", new string[] {
                         "objectpool"});
-#line 7
+#line 20
 this.ScenarioSetup(scenarioInfo);
-#line 8
+#line 21
  testRunner.Given("I have created a pool with a capacity of 10 and 3 available on startup", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 9
+#line 22
  testRunner.And("I have activated the pool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 10
+#line 23
  testRunner.When("I borrow an object", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 11
+#line 24
  testRunner.Then("I get an object", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 12
+#line 25
  testRunner.And("The total number of items that can still be borrowed from the pool is 9", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 13
+#line 26
  testRunner.And("The total objects created by the factory equals 3", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 14
+#line 27
  testRunner.And("The total items readily available equals 2", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -99,66 +139,70 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Borrowing an object when the pool is empty", new string[] {
                         "objectpool"});
-#line 18
+#line 30
 this.ScenarioSetup(scenarioInfo);
-#line 19
+#line 31
  testRunner.Given("I have created a pool with a capacity of 10 and 0 available on startup", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 20
+#line 32
  testRunner.And("I have activated the pool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 21
+#line 33
  testRunner.When("I borrow an object", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 22
+#line 34
  testRunner.Then("I get an object", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 23
+#line 35
  testRunner.And("The total number of items that can still be borrowed from the pool is 9", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 24
+#line 36
  testRunner.And("The total objects created by the factory equals 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 25
+#line 37
  testRunner.And("The total items readily available equals 0", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Returning an object when the pool is full")]
+        [NUnit.Framework.DescriptionAttribute("Returning an object created by the pool")]
         [NUnit.Framework.CategoryAttribute("objectpool")]
-        public virtual void ReturningAnObjectWhenThePoolIsFull()
+        public virtual void ReturningAnObjectCreatedByThePool()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Returning an object when the pool is full", new string[] {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Returning an object created by the pool", new string[] {
                         "objectpool"});
-#line 28
+#line 40
 this.ScenarioSetup(scenarioInfo);
-#line 29
+#line 41
  testRunner.Given("I have created a pool with a capacity of 10 and 10 available on startup", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 30
+#line 42
  testRunner.And("I have activated the pool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 31
- testRunner.When("I return an object", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 32
- testRunner.Then("The object is retired", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 43
+ testRunner.When("I borrow an object", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 44
+ testRunner.And("I return the borrowed object", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 45
+ testRunner.Then("The total number of items that can still be borrowed from the pool is 10", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 46
+ testRunner.And("The total objects created by the factory equals 10", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 47
+ testRunner.And("The total items readily available equals 10", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Returning an object when the pool is not full")]
+        [NUnit.Framework.DescriptionAttribute("Returning an object not created by the pool")]
         [NUnit.Framework.CategoryAttribute("objectpool")]
-        public virtual void ReturningAnObjectWhenThePoolIsNotFull()
+        public virtual void ReturningAnObjectNotCreatedByThePool()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Returning an object when the pool is not full", new string[] {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Returning an object not created by the pool", new string[] {
                         "objectpool"});
-#line 35
+#line 50
 this.ScenarioSetup(scenarioInfo);
-#line 36
+#line 51
  testRunner.Given("I have created a pool with a capacity of 10 and 9 available on startup", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 37
+#line 52
  testRunner.And("I have activated the pool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 38
- testRunner.When("I return an object", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 39
- testRunner.Then("The total number of items that can still be borrowed from the pool is 10", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 40
- testRunner.And("The total items readily available equals 10", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 53
+ testRunner.When("I create a poolable item", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 54
+ testRunner.Then("Trying to return an object throws an InvalidOperationException", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -172,17 +216,17 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Some of the objects in the pool become invalid and have to validate before borrow" +
                     "", new string[] {
                         "objectpool"});
-#line 43
+#line 57
 this.ScenarioSetup(scenarioInfo);
-#line 44
+#line 58
  testRunner.Given("I have created a pool with a capacity of 10 and 3 available on startup", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 45
+#line 59
  testRunner.And("I have activated the pool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 46
+#line 60
  testRunner.When("2 objects in the pool have become invalid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 47
+#line 61
  testRunner.And("I borrow an object", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 48
+#line 62
  testRunner.Then("The total number of items that can still be borrowed from the pool is 9", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -197,17 +241,17 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Some of the objects in the pool become invalid but do not have to validate before" +
                     " borrow", new string[] {
                         "objectpool"});
-#line 51
+#line 65
 this.ScenarioSetup(scenarioInfo);
-#line 52
+#line 66
  testRunner.Given("I have created a pool with a capacity of 10 and 3 available on startup", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 53
+#line 67
  testRunner.And("I have activated the pool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 54
+#line 68
  testRunner.When("2 objects in the pool have become invalid", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 55
+#line 69
  testRunner.And("I borrow an object", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 56
+#line 70
  testRunner.Then("The total number of items that can still be borrowed from the pool is 9", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();

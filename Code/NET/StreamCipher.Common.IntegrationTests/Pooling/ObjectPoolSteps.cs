@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using NUnit.Framework;
 using StreamCipher.Common.Pooling;
 using TechTalk.SpecFlow;
@@ -10,9 +11,9 @@ namespace StreamCipher.Common.IntegrationTests.Pooling
     {
         private DummyPoolableObjectFactory _factory;
         private DummyObjectPool _objectPool;
-        private IPoolableObject _borrowedObject = null;
+        private DummyPoolableObject _borrowedObject = null;
         private DummyPoolableObject _externallyCreatedObject;
-
+        
         public ObjectPoolSteps()
         {
             IntegrationTestHelper.SetUpFixture();
@@ -32,7 +33,6 @@ namespace StreamCipher.Common.IntegrationTests.Pooling
             .Build();
 
             _objectPool = new DummyObjectPool(config);
-            
         }
         
         [Given(@"I have activated the pool")]
@@ -53,7 +53,27 @@ namespace StreamCipher.Common.IntegrationTests.Pooling
             _objectPool.Invalidate(p0);
         }
 
-
+        [When(@"I create a poolable item")]
+        public void WhenICreateAPoolableItem()
+        {
+            _externallyCreatedObject = new DummyPoolableObject();
+        }
+        
+        [When(@"I return (.*) items")]
+        public void WhenIReturnItems(int p0)
+        {
+            for (int i = 0; i < p0; i++)
+            {
+                var dummyPoolableObject = new DummyPoolableObject();
+                _objectPool.ReturnObject(dummyPoolableObject);
+            }
+        }
+        
+        [When(@"I return the borrowed object")]
+        public void WhenIReturnTheBorrowedObject()
+        {
+            _objectPool.ReturnObject(_borrowedObject);
+        }
         
         [Then(@"I get an object")]
         public void ThenIGetAnObject()
@@ -78,19 +98,29 @@ namespace StreamCipher.Common.IntegrationTests.Pooling
         {
             Assert.AreEqual(p0, _objectPool.TotalReadilyAvailable);
         }
-
-
-        [When(@"I return an object")]
-        public void WhenIReturnAnObject()
-        {
-            _externallyCreatedObject= new DummyPoolableObject(true);
-            _objectPool.ReturnObject(_externallyCreatedObject);
-        }
-
+        
         [Then(@"The object is retired")]
         public void ThenTheObjectIsRetired()
         {
             Assert.IsTrue(_externallyCreatedObject.IsRetired);
+        }
+        
+        [Then(@"Trying to borrow an object throws an InvalidOperationException")]
+        public void ThenTryingToBorrowAnObjectThrowsAnInvalidOperationException()
+        {
+            Assert.Throws<InvalidOperationException>(() => _objectPool.BorrowObject());
+        }
+
+        [When(@"The pool is deactivated")]
+        public void WhenThePoolIsDeactivated()
+        {
+            _objectPool.Shutdown();
+        }
+
+        [Then(@"Trying to return an object throws an InvalidOperationException")]
+        public void ThenTryingToReturnAnObjectThrowsAnInvalidOperationException()
+        {
+            Assert.Throws<InvalidOperationException>(() => _objectPool.ReturnObject(_externallyCreatedObject));
         }
 
     }
