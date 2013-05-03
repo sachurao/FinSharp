@@ -19,12 +19,12 @@ namespace StreamCipher.Common.Utilities.Concurrency
         }
     }
 
-    public class ThreadSafe<T> where T: class
+    public class ExclusiveAccess<T> where T: class
     {
         private readonly Object _syncRoot = new object();
         private T _thing;
 
-        public ThreadSafe(T thing)
+        public ExclusiveAccess(T thing)
         {
             _thing = thing;
         }

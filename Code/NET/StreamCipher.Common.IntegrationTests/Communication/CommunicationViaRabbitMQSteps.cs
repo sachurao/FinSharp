@@ -14,18 +14,16 @@ namespace StreamCipher.Common.IntegrationTests.Communication
         private CommunicationSynchronizer _synchronizer;
         private Random randomGenerator = new Random();
         private readonly string _testTopic = "streamcipher.topic.testcomms";
-        private readonly string _messageContent = "abracadabra";
-        private readonly string _correlationId = "testCorrelationId";
+        private string _messageContent = "abracadabra";
+        private string _correlationId = "testCorrelationId";
         private readonly string _responseContent = "crashbangwallop.boom";
-        private readonly string _responseTopic;
+        private readonly string _responseTopic = "streamcipher.topic.response";
 
         public CommunicationViaRabbitMQSteps()
         {
             IntegrationTestHelper.SetUpFixture();
-            
-            _correlationId = _correlationId + randomGenerator.Next().ToString();
-            _messageContent = _messageContent + randomGenerator.Next().ToString();
 
+            
             _peerOne = new CommunicatingPeer("PeerOne");
             _peerTwo = new CommunicatingPeer("PeerTwo");
             _synchronizer = new CommunicationSynchronizer();
@@ -36,6 +34,9 @@ namespace StreamCipher.Common.IntegrationTests.Communication
         public void BeforeTestScenario()
         {
             _synchronizer.Reset();
+            _correlationId = _correlationId + randomGenerator.Next().ToString();
+            _messageContent = _messageContent + randomGenerator.Next().ToString();
+
         }
 
         [AfterScenario("communication")]
