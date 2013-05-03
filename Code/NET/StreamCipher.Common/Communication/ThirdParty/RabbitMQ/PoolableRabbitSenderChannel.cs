@@ -1,29 +1,32 @@
-using System;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using RabbitMQ.Client;
-using StreamCipher.Common.Interfaces.DataInterchange;
+using StreamCipher.Common.Communication.ThirdParty.RabbitMQ;
 using StreamCipher.Common.Logging;
 
 namespace StreamCipher.Common.Communication.ThirdParty.RabbitMQ
 {
-    public class RabbitMessageSenderChannel:BaseRabbitCommunicationChannel, IMessageSenderChannel
+    public class PoolableRabbitSenderChannel : BaseRabbitCommunicationChannel, IMessageSenderChannel
     {
         #region Init
-        
-        public RabbitMessageSenderChannel(IDataInterchangeFormatter formatter,
-            ICommunicationServiceConfig config, int instanceNum,
-            Action<Exception> defaultExceptionHandler) :
-            base(formatter, config, "Sender_" + instanceNum.ToString(), defaultExceptionHandler)
+
+        public PoolableRabbitSenderChannel(ICommunicationServiceConfig config,
+                                           int instanceNum)
+            : base(config, "Sender_" + instanceNum.ToString())
         {
         }
 
         #endregion
-        
+
         #region IMessageSenderChannel
 
-        public void Send(IMessageDestination destination, IMessageWrapper message, 
+        public void Send(IMessageDestination destination, IMessageWrapper message,
             IMessageDestination responseDestination = null)
         {
-            Logger.Debug(this, String.Format("{0}: Sending message to {1} with correlation id {2}", this.ConnectionId, destination.Address,
+            Logger.Debug(this, String.Format("{0}: Just sending message to {1} with correlation id {2}", this.ConnectionId, destination.Address,
                 message.CorrelationId));
             IBasicProperties basicProperties = _session.Use.CreateBasicProperties();
             basicProperties.AppId = this.ConnectionId;
@@ -32,14 +35,15 @@ namespace StreamCipher.Common.Communication.ThirdParty.RabbitMQ
                 basicProperties.ReplyTo = responseDestination.Address;
             _session.Use.BasicPublish(EXCHANGE_NAME, destination.Address,
                 basicProperties, Formatter.Serialize(message.Content.ToString()));
-            Logger.Debug(this, String.Format("{0}: Sent message to {1} with correlation id {2}", this.ConnectionId, destination.Address,
+            Logger.Debug(this, String.Format("{0}: Just sent message to {1} with correlation id {2}", this.ConnectionId, destination.Address,
                 message.CorrelationId));
-            
+
         }
-        
+
+
+
         #endregion
 
-        
 
 
     }

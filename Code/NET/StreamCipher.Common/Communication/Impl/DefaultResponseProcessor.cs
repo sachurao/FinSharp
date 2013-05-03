@@ -11,7 +11,6 @@ namespace StreamCipher.Common.Communication.Impl
             new ConcurrentDictionary<string, Action<IIncomingMessage>>();
         private Stopwatch _stopwatch = new Stopwatch();
         
-
         public void ProcessMessageReceived(IIncomingMessage incomingMessage)
         {
             //This will be done on the worker thread of the background queue.

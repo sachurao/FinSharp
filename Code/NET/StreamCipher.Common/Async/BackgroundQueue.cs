@@ -3,17 +3,15 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using StreamCipher.Common.Interfaces.ActivityControl;
 using StreamCipher.Common.Logging;
-using StreamCipher.Common.Utilities;
-using StreamCipher.Common.Utilities.Concurrency;
 
 namespace StreamCipher.Common.Async
 {
     /// <summary>
     /// Configurable implementation of the producer-consumer pattern.
+    /// Supports co-operative cancellation.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="T">Item to be queued.</typeparam>
     public class BackgroundQueue<T>:ControlledComponent
     {
         //TODO: DefaultBackgroundQueue should be disposable.
@@ -23,10 +21,8 @@ namespace StreamCipher.Common.Async
         
         private readonly BlockingCollection<T> _blockingQueue;
         private readonly Task _processor;
-        private readonly AtomicBoolean _onceOnly = new AtomicBoolean(false);
         private readonly BackgroundQueueConfig _config;
-        private volatile ActivationStatus _status = ActivationStatus.INACTIVE;
-        private CancellationTokenSource _cancellationSource;
+        private readonly CancellationTokenSource _cancellationSource;
 
         private static int _instanceNum = 0;
         

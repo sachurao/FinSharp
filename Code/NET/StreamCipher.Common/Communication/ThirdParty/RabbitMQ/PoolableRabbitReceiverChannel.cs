@@ -1,34 +1,35 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using StreamCipher.Common.Communication.Impl;
-using StreamCipher.Common.Interfaces.DataInterchange;
+using StreamCipher.Common.Communication.ThirdParty.RabbitMQ;
 using StreamCipher.Common.Logging;
 using StreamCipher.Common.Utilities.Concurrency;
 
 namespace StreamCipher.Common.Communication.ThirdParty.RabbitMQ
 {
-    public class RabbitMessageReceiverChannel: BaseRabbitCommunicationChannel, IMessageReceiverChannel
+    public class PoolableRabbitReceiverChannel: BaseRabbitCommunicationChannel, IMessageReceiverChannel
     {
         //private static SharedQueue _sharedQueue = new SharedQueue();
         private readonly ThreadSafe _threadSafeExecutor = new ThreadSafe();
         private readonly IncomingMessageManager _incomingMessageManager;
         private readonly IDictionary<IMessageDestination, string> _consumerDict; 
-
-        #region Init
         
-        public RabbitMessageReceiverChannel(IDataInterchangeFormatter formatter,
-            ICommunicationServiceConfig config, int instanceNum,
-            Action<Exception> defaultExceptionHandler, IncomingMessageManager incomingMessageManager) :
-            base(formatter, config, "Receiver_" + instanceNum.ToString(), defaultExceptionHandler)
+        #region Init
+
+        public PoolableRabbitReceiverChannel(ICommunicationServiceConfig config,
+                                           int instanceNum)
+            : base(config, "Receiver_" + instanceNum.ToString())
         {
-            
+            _incomingMessageManager = new IncomingMessageManager();
             _consumerDict = new Dictionary<IMessageDestination, string>();
-            _incomingMessageManager = incomingMessageManager;
         }
 
         #endregion
 
-        #region Implementation of IMessageReceiverChannel
+         #region Implementation of IMessageReceiverChannel
 
         public void Subscribe(IMessageDestination topicOrQueue, Action<IIncomingMessage> incomingMessageHandler)
         {
@@ -86,7 +87,7 @@ namespace StreamCipher.Common.Communication.ThirdParty.RabbitMQ
                             string correlationId = evt.BasicProperties.CorrelationId;
                             string responseTopic = evt.BasicProperties.ReplyTo;
                             //IMessage
-                            var content = _formatter.Deserialize(evt.Body);
+                            var content = _config.Formatter.Deserialize(evt.Body);
                             var incomingMessage = new IncomingMessage(content, correlationId,
                                 sender,
                                 new MessageDestination(routingKey),
@@ -122,5 +123,7 @@ namespace StreamCipher.Common.Communication.ThirdParty.RabbitMQ
             _incomingMessageManager.Dispose();
             base.DisconnectCore();
         }
+
+
     }
 }

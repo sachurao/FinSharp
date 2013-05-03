@@ -35,5 +35,10 @@ namespace StreamCipher.Common.IntegrationTests.Pooling
             _isRetired.CompareAndSet(false, true);
         }
 
+        public void Invalidate()
+        {
+            _isValidToUse.CompareAndSet(true, false);
+        }
+
     }
 }

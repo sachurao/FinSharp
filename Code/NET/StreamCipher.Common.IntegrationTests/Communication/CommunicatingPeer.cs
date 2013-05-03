@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 using StreamCipher.Common.Communication;
 using StreamCipher.Common.Communication.Impl;
 using StreamCipher.Common.Communication.ThirdParty.RabbitMQ;
+using StreamCipher.Common.DataInterchange;
 using StreamCipher.Common.Interfaces.DataInterchange;
 using StreamCipher.Common.Logging;
 
@@ -43,8 +45,8 @@ uniquePeerAddress = prefix_username_machinename_processid
      */
     class CommunicatingPeer
     {
-        public ICommunicationService CommSvc { get; private set; }
-        public CommunicationMode CommunicationMode { get; private set; }
+        public ICommunicationService CommSvc2 { get; private set; }
+        //private ICommunicationService CommSvc { get;  set; }
         private String _peerName;
 
         public CommunicatingPeer(String peerName)
@@ -55,36 +57,41 @@ uniquePeerAddress = prefix_username_machinename_processid
         
         public void ConnectToRabbitMQ(string customResponseTopic)
         {
-            CommunicationMode = new CommunicationMode(ServiceBusType.RABBITMQ, DataInterchangeFormat.TEXT_UTF8);
-            var config = new DefaultCommunicationServiceConfig("localhost", _peerName, 3,1,customResponseTopic);
-            config.CustomProps.Add("VirtualHost", "TestEnv");
-            config.CustomProps.Add("UserName", "finsharp");
-            config.CustomProps.Add("Password", "streamcipher");
-
-            CommSvc = new DefaultCommunicationService();
-            CommSvc.Build(CommunicationMode, new RabbitChannelFactory())
-                .WithConfig(config)
-                .WithDefaultExceptionHandler((ex) => Logger.Error(CommSvc, "Messaging error", ex))
-                .Now();
-            /*
             
-             *          var config = new DefaultCommunicationServiceConfig(new RabbitChannelFactory(),
-             *          DataInterchangeFormat.TEXT_UTF8,
-             *          "localhost", _peerName, 3,1,customResponseTopic);
-             *          
-                        config.CustomProps.Add("VirtualHost", "TestEnv");
-                        config.CustomProps.Add("UserName", "finsharp");
-                        config.CustomProps.Add("Password", "streamcipher");
-             *          config.AddDefaultExceptionHandler((ex) => Logger.Error(CommSvc,"Messaging error", ex));
+            IDictionary<String, String> customProps = new Dictionary<string, string>();
+            customProps.Add("VirtualHost", "TestEnv");
+            customProps.Add("UserName", "finsharp");
+            customProps.Add("Password", "streamcipher");
+            
+            var config2 = new DefaultCommunicationServiceConfig.Builder()
+                {
+                    SetDefaultExceptionHandler = (ex) => Logger.Error(this, "Messaging error", ex),
+                    SetFormatter = new Utf8Formatter(),
+                    SetServiceBusAddress = "localhost",
+                    SetTotalSenderChannels = 3,
+                    SetTotalReceiverChannels = 1,
+                    SetConnectionIdPrefix = _peerName,
+                    SetUniqueResponseTopic = customResponseTopic + "." +_peerName,
+                    ImportCustomProps = customProps
+                }.Build();
 
-                        ICommunicationService2 commSvc = new DefaultCommunicationService(config);
-             *          commSvc.Start();
-            */
+            CommSvc2 = new DefaultCommunicationService(config2,
+                                                            new PoolableRabbitSenderChannelFactory(config2),
+                                                            new PoolableRabbitReceiverChannelFactory(config2));
+            CommSvc2.Start();
         }
 
         public void Disconnect()
         {
-            CommSvc.Dispose();
+            //CommSvc.Dispose();
+            Logger.Debug(this, String.Format("Shutting Down {0}",_peerName));
+            CommSvc2.Shutdown();
+            Logger.Debug(this, String.Format("Shut Down {0}", _peerName));
+        }
+
+        public String PeerName
+        {
+            get { return _peerName; }
         }
 
         
@@ -115,8 +122,7 @@ uniquePeerAddress = prefix_username_machinename_processid
         {
             lock (_syncRoot)
             {
-                peer.CommSvc.Send(peer.CommunicationMode, 
-                    new MessageDestination(topic), 
+                peer.CommSvc2.Send(new MessageDestination(topic), 
                     new MessageWrapper(content, correlationId),responseHandler);
                 
                 LastSentMessageTopic = topic;
@@ -151,7 +157,8 @@ uniquePeerAddress = prefix_username_machinename_processid
                 ReceivedMessage = incomingMessage.Content.ToString();
                 ReceivedMsgCorrelationId = incomingMessage.CorrelationId;
                 ReplyTo = incomingMessage.ReplyTo != null ? incomingMessage.ReplyTo.Address : String.Empty;
-                Logger.Info(this, String.Format("Received message  on topic {0} from {1}",
+                Logger.Info(this, String.Format("{0} - Received message  on topic {1} from {2}",
+                    recipient.PeerName,
                     incomingMessage.Topic.Address, incomingMessage.Sender));
                 Monitor.Pulse(_syncRoot);
             }
@@ -159,13 +166,13 @@ uniquePeerAddress = prefix_username_machinename_processid
 
         public void Subscribe(CommunicatingPeer peer, string topic)
         {
-            peer.CommSvc.Subscribe(peer.CommunicationMode, new MessageDestination(topic), 
+            peer.CommSvc2.Subscribe(new MessageDestination(topic), 
                 i => Receive(i, peer));
         }
 
         public void Unsubscribe(CommunicatingPeer peer, string topic)
         {
-            peer.CommSvc.Unsubscribe(peer.CommunicationMode, new MessageDestination(topic));
+            peer.CommSvc2.Unsubscribe(new MessageDestination(topic));
         }
 
         public void Reset()
