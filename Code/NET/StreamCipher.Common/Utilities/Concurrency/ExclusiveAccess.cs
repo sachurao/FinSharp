@@ -29,7 +29,7 @@ namespace StreamCipher.Common.Utilities.Concurrency
             _thing = thing;
         }
 
-        public T Use
+        public T Get
         {
             get
             {
@@ -39,5 +39,23 @@ namespace StreamCipher.Common.Utilities.Concurrency
                 }        
             }
         }
+
+        public void Do(Action<T> doSomethingWithIt)
+        {
+            lock(_syncRoot)
+            {
+                doSomethingWithIt(_thing);
+            }
+        }
+
+        public T2 UseToRetrieve<T2>(Func<T,T2> func)
+        {
+            lock (_syncRoot)
+            {
+                return func(_thing);
+            }
+        }
+
+
     }
 }

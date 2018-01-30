@@ -99,8 +99,8 @@ namespace StreamCipher.Common.Pooling
             if (!_itemsCreatedByPool.Contains(poolableObject)) throw new InvalidOperationException("Cannot return an item that wasn't originally borrowed from the pool.");          
             try
             {
-                _poolImpl.Add(poolableObject);
                 _availabilityGate.Release();
+                _poolImpl.Add(poolableObject);
             }
             catch (SemaphoreFullException)
             {

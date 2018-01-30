@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StreamCipher.Common", "StreamCipher.Common\StreamCipher.Common.csproj", "{8B4E9858-039A-4593-9C45-5B7500716CF9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StreamCipher.Common.IntegrationTests", "StreamCipher.Common.IntegrationTests\StreamCipher.Common.IntegrationTests.csproj", "{791C6D0F-AFF9-4A50-8F0C-45F3AB431A80}"
@@ -10,6 +12,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StreamCipher.FinSharp.WorkBench", "StreamCipher.FinSharp.WorkBench\StreamCipher.FinSharp.WorkBench.csproj", "{89CD6798-AEBF-4908-81F9-42C8F72C5445}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StreamCipher.FinSharp.Services", "StreamCipher.FinSharp.Services\StreamCipher.FinSharp.Services.csproj", "{F17B5C0D-084B-4021-97FB-8AB18D706A55}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StreamCipher.FinSharp", "StreamCipher.FinSharp\StreamCipher.FinSharp.csproj", "{B19FE17F-38AF-4E5C-BA06-EDE3CE3B0087}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,6 +41,10 @@ Global
 		{F17B5C0D-084B-4021-97FB-8AB18D706A55}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F17B5C0D-084B-4021-97FB-8AB18D706A55}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F17B5C0D-084B-4021-97FB-8AB18D706A55}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B19FE17F-38AF-4E5C-BA06-EDE3CE3B0087}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B19FE17F-38AF-4E5C-BA06-EDE3CE3B0087}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B19FE17F-38AF-4E5C-BA06-EDE3CE3B0087}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B19FE17F-38AF-4E5C-BA06-EDE3CE3B0087}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
