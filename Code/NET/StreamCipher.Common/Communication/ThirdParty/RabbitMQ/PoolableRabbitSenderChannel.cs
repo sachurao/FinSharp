@@ -26,15 +26,16 @@ namespace StreamCipher.Common.Communication.ThirdParty.RabbitMQ
         public void Send(IMessageDestination destination, IMessageWrapper message,
             IMessageDestination responseDestination = null)
         {
-            Logger.Debug(this, String.Format("{0}: Just sending message to {1} with correlation id {2}", this.ConnectionId, destination.Address,
+            Logger.Debug(this, String.Format("{0}: Just sending message to {1} with correlation id {2}", 
+                this.ConnectionId, destination.Address,
                 message.CorrelationId));
-            IBasicProperties basicProperties = _session.Use.CreateBasicProperties();
+            IBasicProperties basicProperties = _session.UseToRetrieve(s=>s.CreateBasicProperties());
             basicProperties.AppId = this.ConnectionId;
             basicProperties.CorrelationId = message.CorrelationId;
             if (responseDestination != null)
                 basicProperties.ReplyTo = responseDestination.Address;
-            _session.Use.BasicPublish(EXCHANGE_NAME, destination.Address,
-                basicProperties, Formatter.Serialize(message.Content.ToString()));
+            _session.Do(s=>s.BasicPublish(EXCHANGE_NAME, destination.Address,
+                basicProperties, Formatter.Serialize(message.Content)));
             Logger.Debug(this, String.Format("{0}: Just sent message to {1} with correlation id {2}", this.ConnectionId, destination.Address,
                 message.CorrelationId));
 

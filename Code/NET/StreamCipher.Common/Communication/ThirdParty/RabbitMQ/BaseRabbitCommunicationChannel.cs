@@ -68,20 +68,20 @@ namespace StreamCipher.Common.Communication.ThirdParty.RabbitMQ
             //You can create multiple channels or sessions on the same connection... although not sure what that means.
             //Using one session per connection here.
             _session = new ExclusiveAccess<IModel>(_connection.CreateModel());
-            _session.Use.ExchangeDeclare(EXCHANGE_NAME, ExchangeType.Topic, true);
+            _session.Do(s => s.ExchangeDeclare(EXCHANGE_NAME, ExchangeType.Topic, true));
         }
 
         protected override void DisconnectCore()
         {
             Logger.Debug(this, "Disconnecting connection...");
-            _session.Use.Close();
+            _session.Do(s=>s.Close());
             _connection.Close();
             Logger.Debug(this, "Disconnected connection.");
         }
 
         protected override bool IsConnectedCore()
         {
-            return _session.Use.IsOpen;
+            return _session.UseToRetrieve(s => s.IsOpen);
         }
 
         #endregion

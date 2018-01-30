@@ -65,9 +65,11 @@ namespace StreamCipher.Common.Communication.ThirdParty.RabbitMQ
             String topic = messageDestination.Address;
             if (!_incomingMessageManager.KnownMessageProcessors.Keys.Contains(messageDestination))
             {
-                _session.Use.QueueDeclare(topic, false, false, false, null);
-                _session.Use.QueueBind(topic, EXCHANGE_NAME, topic);
-                
+                _session.Do(s =>
+                {
+                    s.QueueDeclare(topic, false, false, false, null);
+                    s.QueueBind(topic, EXCHANGE_NAME, topic);
+                });
             }
 
 
@@ -97,12 +99,12 @@ namespace StreamCipher.Common.Communication.ThirdParty.RabbitMQ
                         finally
                         {
                             //Take it off the message queue
-                            _session.Use.BasicAck(evt.DeliveryTag, false);                            
+                            _session.Do(s=>s.BasicAck(evt.DeliveryTag, false));                            
                         }
                         
                     });
 
-            var consumerTag = _session.Use.BasicConsume(topic, false, consumer);
+            var consumerTag = _session.UseToRetrieve(s => s.BasicConsume(topic, false, consumer));
             _consumerDict.Add(messageDestination, consumerTag);
             Logger.Debug(this, String.Format("{0}: Subscribed to topic {1}", this.ConnectionId, messageDestination.Address));
         }
@@ -113,7 +115,7 @@ namespace StreamCipher.Common.Communication.ThirdParty.RabbitMQ
             {
                 var consumerTag = _consumerDict[messageDestination];
                 if (!String.IsNullOrEmpty(consumerTag))
-                    _session.Use.BasicCancel(consumerTag);
+                    _session.Do(s=>s.BasicCancel(consumerTag));
                 _consumerDict.Remove(messageDestination);
             }
         }

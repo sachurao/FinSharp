@@ -15,6 +15,8 @@ namespace StreamCipher.Common.Interfaces.DataInterchange
     public enum DataInterchangeFormat
     {
         TEXT_UTF8 = 0,
-        CUSTOM = 1
+        PROTOBUF = 1,
+        JSON = 2,
+        CUSTOM = 3
     }
 }
